@@ -1,122 +1,44 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+//lista das abas, igual ao st.tabs do streamlit (início, dados, visualizações, sobre)
+//guardar em uma lista evita repetir o mesmo botão quatro vezes
+const ABAS = ["Início", "Dados", "Visualizações", "Sobre"];
 
 function App() {
-  const [count, setCount] = useState(0)
+  //useState guarda qual aba está aberta
+  //quando chamamos setAbaAtiva, o react redesenha a tela com o novo valor
+  const [abaAtiva, setAbaAtiva] = useState("Início");
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="pagina">
+      <header className="topo">
+        <h1>FOCUS Multi-Cloud</h1>
+        <p>Padronização de custos cloud para o formato FOCUS</p>
+      </header>
 
-      <div className="ticks"></div>
+      <nav className="abas">
+        {/*o map cria um botão para cada item da lista
+            o key ajuda o react a saber qual botão é qual quando a lista muda*/}
+        {ABAS.map((aba) => (
+          <button
+            key={aba}
+            className={aba === abaAtiva ? "aba aba--ativa" : "aba"}
+            onClick={() => setAbaAtiva(aba)}
+          >
+            {aba}
+          </button>
+        ))}
+      </nav>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <main>
+        {/*só mostra o conteúdo da aba que está ativa (o && significa "se for verdade, mostre")*/}
+        {abaAtiva === "Início" && <p>Aqui vai o upload do CSV.</p>}
+        {abaAtiva === "Dados" && <p>Aqui vai a tabela FOCUS.</p>}
+        {abaAtiva === "Visualizações" && <p>Aqui vão os gráficos.</p>}
+        {abaAtiva === "Sobre" && <p>Aqui vai a explicação do projeto.</p>}
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
