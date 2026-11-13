@@ -321,6 +321,192 @@ input[type="file"]::file-selector-button {
   }
 }
 
+/* ---------- página sobre ---------- */
+
+.sobre__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.sobre__nuvem {
+  width: 80px;
+}
+
+.sobre__titulo {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.sobre__subtitulo {
+  margin: 0.25rem 0 0;
+  color: var(--cor-texto-suave);
+}
+
+/* duas colunas: textos à esquerda, informações rápidas à direita; no tablet/celular viram uma só */
+.sobre__grade {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.sobre__coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* o mesmo vidro da sidebar, em versão para cartões */
+.cartao-vidro {
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cartao-vidro h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cor-primaria);
+}
+
+.cartao-vidro p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* as listas de provedores e tecnologias viram "etiquetas" que quebram de linha quando faltar espaço */
+.sobre__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sobre__chip {
+  padding: 0.35rem 0.8rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sobre__passos {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* o cartão dos criadores ocupa a largura toda, abaixo das duas colunas */
+.sobre__criadores {
+  margin-top: 1rem;
+}
+
+/* três cartões lado a lado; auto-fit faz quebrar linha sozinho quando falta espaço, sem precisar de media query */
+.criadores__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.criador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* mesmo gradiente roxo do item ativo da sidebar */
+.criador__avatar {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  object-fit: cover;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.75rem;
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
+}
+
+.criador__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.criador__nome {
+  font-size: 1rem;
+}
+
+.criador__funcao {
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+.criador__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* reaproveita o .sobre__chip, só tira o sublinhado do link e acende ao passar o mouse */
+.criador__link {
+  color: var(--cor-texto);
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.criador__link:hover {
+  background: rgba(152, 51, 175, 0.35);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 900px) {
+  .sobre__grade {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- login ---------- */
 
 /* position: relative deixa o canvas (position: absolute) se encaixar dentro da tela de login */

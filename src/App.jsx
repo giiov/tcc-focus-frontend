@@ -3,6 +3,7 @@ import Layout from "./componentes/Layout";
 import Inicio from "./paginas/Inicio";
 import Login from "./paginas/Login";
 import Placeholder from "./paginas/Placeholder";
+import Sobre from "./paginas/Sobre";
 
 //o App agora só decide qual página aparece em cada endereço
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <Route path="/graficos" element={<Placeholder titulo="Gráficos" descricao="Aqui vão os gráficos." />} />
         <Route path="/historico" element={<Placeholder titulo="Histórico" descricao="Aqui vão as conversões anteriores." />} />
         <Route path="/assistente" element={<Placeholder titulo="Assistente" descricao="Aqui vai o chat com a IA." />} />
-        <Route path="/sobre" element={<Placeholder titulo="Sobre" descricao="Aqui vai a explicação do projeto." />} />
+        <Route path="/sobre" element={<Sobre />} />
       </Route>
     </Routes>
   );
