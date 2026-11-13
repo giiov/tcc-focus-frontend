@@ -1,111 +1,500 @@
+/* fonte do título (a mesma do logo), copiada do projeto antigo
+   font-display: swap mostra o texto com uma fonte reserva enquanto a Trap Black carrega, em vez de deixar a tela em branco */
+@font-face {
+  font-family: "Trap";
+  src: url("./assets/fonts/Trap-Black-900.otf") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* cores da paleta oficial, cada uma com um papel
+   ficam em variáveis para mudar uma cor em um lugar só */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --cor-fundo: #190019;
+  --cor-fundo-secundario: #2b124c;
+  --cor-roxo-medio: #5f2d91;
+  --cor-primaria: #9833af;
+  --cor-destaque: #b24a82;
+  --cor-texto: #e6c6db;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* versões mais fracas do texto e da borda, feitas com transparência para combinar com qualquer fundo */
+  --cor-texto-suave: rgba(230, 198, 219, 0.7);
+  --cor-borda: rgba(95, 45, 145, 0.6);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* a paleta não tem vermelho, então o erro ganha uma cor própria para chamar atenção */
+  --cor-erro: #ff6b8a;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --fonte-titulo: "Trap", "Inter", sans-serif;
+  --fonte-texto: "Inter", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+/* sem isso, padding e borda aumentam o tamanho dos elementos e o layout "estoura" */
+* {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+/* o navegador deixa uma margem de 8px no body por padrão; zeramos para controlar o espaçamento */
+/* o fundo quadriculado é feito só com gradientes: duas camadas de linhas finas (horizontais e verticais) formam a grade
+   os dois brilhos coloridos dão profundidade, e é neles que o vidro da sidebar vai "pegar" cor
+   background-attachment: fixed mantém o fundo parado quando a página rola */
+body {
   margin: 0;
+  background-color: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(95, 45, 145, 0.5), transparent 55%),
+    radial-gradient(ellipse at 95% 100%, rgba(178, 74, 130, 0.2), transparent 50%),
+    radial-gradient(circle at 0% 75%, rgba(95, 45, 145, 0.55), transparent 35%),
+    linear-gradient(rgba(95, 45, 145, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 45, 145, 0.2) 1px, transparent 1px);
+  background-size: auto, auto, auto, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+  color: var(--cor-texto);
+  font-family: var(--fonte-texto);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* garante que dá para ver qual elemento está selecionado ao navegar pelo teclado */
+:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* ---------- logo ---------- */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo__nuvem {
+  width: 44px;
+  height: 44px;
+}
+
+.logo__texto {
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.25rem;
+}
+
+/* o gradiente vai no fundo do texto e background-clip: text recorta o fundo no formato das letras */
+.logo__focus {
+  background: linear-gradient(90deg, var(--cor-primaria), var(--cor-destaque));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- componentes comuns ---------- */
+
+.dica {
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+}
+
+.erro {
+  color: var(--cor-erro);
+}
+
+.botao {
+  background: var(--cor-primaria);
+  color: var(--cor-texto);
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* brightness clareia o botão sem precisarmos inventar mais uma cor */
+.botao:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+/* botão desabilitado fica apagado e sem o cursor de clique, para parecer que não dá para usar */
+.botao:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* o botão "Escolher arquivo" vem com visual do navegador; ::file-selector-button estiliza só ele */
+input[type="file"] {
+  color: var(--cor-texto-suave);
+}
+
+input[type="file"]::file-selector-button {
+  background: var(--cor-fundo-secundario);
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+/* ---------- títulos de página ---------- */
+
+.pagina__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.75rem;
+  margin: 0 0 1rem;
+}
+
+/* ---------- layout: sidebar + conteúdo ---------- */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* liquid glass: a sidebar vira um painel flutuante de cantos bem redondos
+   sticky + height deixa o painel parado na tela enquanto só o conteúdo rola
+   o margin cria o espaço em volta, que faz ela parecer solta do canto da janela */
+.sidebar {
+  position: sticky;
+  top: 12px;
+  width: 240px;
+  height: calc(100vh - 24px);
+  margin: 12px 0 12px 12px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.25rem 1rem;
+  border-radius: 24px;
+  /* isolation cria um contexto próprio, assim o brilho (::before) fica atrás dos itens sem vazar */
+  isolation: isolate;
+  /* o fundo é só um leve "leitoso" em degradê; quem faz o vidro é o blur + saturate + brightness */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  /* as sombras inset desenham a espessura do vidro: reflexo forte no topo, mais fraco nas laterais e na base
+     a última sombra (de fora) solta o painel do fundo */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 28px rgba(255, 255, 255, 0.06),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+  transition: width 0.2s;
+}
+
+/* reflexo de luz no canto superior esquerdo, como a luz batendo na curva do vidro
+   o ::before fica atrás dos itens (z-index -1) e não atrapalha cliques */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, transparent 70%, rgba(255, 255, 255, 0.03));
+  pointer-events: none;
+}
+
+/* na sidebar o nome fica em duas linhas, senão não cabe ao lado da nuvem */
+.sidebar .logo__texto {
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.sidebar .logo__focus {
+  display: block;
+}
+
+.menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar__rodape {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* serve para o link (NavLink/Link) e para o botão de recolher, que precisam ter a mesma cara */
+.menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.25rem;
+  border: none;
+  border-radius: 16px;
+  background: none;
+  color: var(--cor-texto-suave);
+  font: inherit;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ao passar o mouse, o item ganha uma "pílula" de vidro clarinha */
+.menu__item:hover {
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* o quadradinho do ícone lembra os cubos que orbitam a nuvem no logo
+   agora é um pedacinho de vidro, com o mesmo reflexo no topo da sidebar */
+.menu__quadrado {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+/* o item da página atual vira um vidro tingido de roxo, com brilho em volta */
+.menu__item--ativo {
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.menu__item--ativo .menu__quadrado {
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
+}
+
+/* min-width: 0 deixa o conteúdo encolher; sem isso uma tabela larga estica a página em vez de rolar */
+.conteudo {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+/* sidebar recolhida: some o texto e sobram só os quadradinhos
+   no celular a regra é a mesma, porque não há espaço para a sidebar aberta
+   o padding lateral menor + justify-content: center deixam os quadradinhos centralizados no painel arredondado */
+.layout--recolhido .sidebar {
+  width: 72px;
+  padding: 1.25rem 0.5rem;
+}
+
+.layout--recolhido .menu__rotulo {
+  display: none;
+}
+
+.layout--recolhido .menu__item,
+.layout--recolhido .logo {
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 72px;
+    padding: 1.25rem 0.5rem;
+  }
+
+  .menu__rotulo {
+    display: none;
+  }
+
+  .menu__item,
+  .sidebar .logo {
+    justify-content: center;
+  }
+
+  .conteudo {
+    padding: 1.25rem;
+  }
+}
+
+/* ---------- login ---------- */
+
+/* position: relative deixa o canvas (position: absolute) se encaixar dentro da tela de login */
+.login {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  background: radial-gradient(ellipse at 30% 40%, rgba(95, 45, 145, 0.55) 0%, var(--cor-fundo) 65%);
+}
+
+/* o canvas ocupa a tela toda por trás do conteúdo
+   pointer-events: none evita que ele atrapalhe cliques */
+.fundo-quadrados {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* o z-index coloca o conteúdo por cima do canvas */
+.login__vitrine,
+.login__lado {
+  position: relative;
+  z-index: 1;
+}
+
+/* o brilho roxo atrás da nuvem faz ela parecer iluminada, e não colada no fundo */
+.login__vitrine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem;
+  text-align: center;
+}
+
+.login__nuvem {
+  width: min(380px, 70%);
+}
+
+/* o movimento só roda para quem não pediu menos animação no sistema */
+@media (prefers-reduced-motion: no-preference) {
+  .login__nuvem {
+    animation: flutuar 6s ease-in-out infinite;
+  }
+}
+
+@keyframes flutuar {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.login__chamada {
+  max-width: 22ch;
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.9rem;
+  line-height: 1.15;
+}
+
+.login__apoio {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--cor-texto-suave);
+}
+
+.login__lado {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.login__cartao {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2rem;
+  /* o mesmo vidro da sidebar: os quadradinhos aparecem borrados atrás do formulário */
+  background: rgba(43, 18, 76, 0.55);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(230, 198, 219, 0.14);
+  border-radius: 12px;
+}
+
+.login__cartao h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* sem o gap os campos e o botão ficavam colados uns nos outros */
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login__form .botao {
+  width: 100%;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.campo label {
+  font-size: 0.9rem;
+  color: var(--cor-texto-suave);
+}
+
+/* o campo usa o mesmo vidro da sidebar: película branca bem leve, blur, borda clara e reflexo no topo */
+.campo input {
+  padding: 0.7rem 0.9rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  color: var(--cor-texto);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 14px rgba(255, 255, 255, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.25);
+  font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+/* ao digitar, a borda acende em roxo, como o item ativo da sidebar */
+.campo input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 0 14px rgba(255, 255, 255, 0.04),
+    0 0 0 3px rgba(152, 51, 175, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.login__alternar {
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--cor-texto);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* no celular a vitrine some e fica só o formulário */
+@media (max-width: 800px) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+
+  .login__vitrine {
+    display: none;
+  }
 }
