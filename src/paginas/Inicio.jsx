@@ -81,40 +81,47 @@ function Inicio() {
   }
 
   return (
-    <section>
+    <section className="inicio">
       <h1 className="pagina__titulo">Início</h1>
-      <h2>Envie seu arquivo de custos (.csv)</h2>
 
-      <input type="file" accept=".csv" onChange={escolherArquivo} />
+      <div className="cartao-vidro inicio__cartao">
+        <h2>Envie seu arquivo de custos (.csv)</h2>
 
-      <p className="dica">
-        Suportados: AWS Cost and Usage Report, GCP Billing Export, Azure Cost Export e Oracle OCI Cost
-      </p>
+        <div className="inicio__upload">
+          <input type="file" accept=".csv" onChange={escolherArquivo} />
+        </div>
 
-      {/*role="alert" faz o leitor de tela avisar o erro assim que ele aparece*/}
-      {erro && (
-        <p className="erro" role="alert">
-          {erro}
+        <p className="dica">
+          Suportados: AWS Cost and Usage Report, GCP Billing Export, Azure Cost Export e Oracle OCI Cost
         </p>
-      )}
 
-      {arquivo && (
-        <p>
-          Arquivo escolhido: <strong>{arquivo.name}</strong> ({(arquivo.size / 1024 / 1024).toFixed(2)} MB)
-        </p>
-      )}
+        {/*role="alert" faz o leitor de tela avisar o erro assim que ele aparece*/}
+        {erro && (
+          <p className="erro" role="alert">
+            {erro}
+          </p>
+        )}
 
-      {/*disabled impede o clique enquanto não houver arquivo válido ou enquanto o envio está em andamento*/}
-      <button className="botao" onClick={enviar} disabled={!arquivo || enviando}>
-        {enviando ? "Enviando..." : "Enviar"}
-      </button>
+        {arquivo && (
+          <p>
+            Arquivo escolhido: <strong>{arquivo.name}</strong> ({(arquivo.size / 1024 / 1024).toFixed(2)} MB)
+          </p>
+        )}
 
-      {resultado && (
-        <p>
-          Convertido com sucesso: formato <strong>{resultado.formato.toUpperCase()}</strong>,{" "}
-          <strong>{resultado.total_linhas}</strong> linhas.
-        </p>
-      )}
+        {/*disabled impede o clique enquanto não houver arquivo válido ou enquanto o envio está em andamento*/}
+        <div>
+          <button className="botao" onClick={enviar} disabled={!arquivo || enviando}>
+            {enviando ? "Enviando..." : "Enviar arquivo"}
+          </button>
+        </div>
+
+        {resultado && (
+          <p>
+            Convertido com sucesso: formato <strong>{resultado.formato.toUpperCase()}</strong>,{" "}
+            <strong>{resultado.total_linhas}</strong> linhas.
+          </p>
+        )}
+      </div>
     </section>
   );
 }

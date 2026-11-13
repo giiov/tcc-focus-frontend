@@ -97,39 +97,95 @@ body {
 }
 
 .botao {
-  background: var(--cor-primaria);
-  color: var(--cor-texto);
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
+  position: relative;
+  background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-destaque) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  padding: 0.7rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  box-shadow:
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.6),
+    0 8px 20px rgba(152, 51, 175, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* brightness clareia o botão sem precisarmos inventar mais uma cor */
+/* efeito liquid-glass ao interagir com o botão */
 .botao:hover:not(:disabled) {
+  transform: translateY(-1px);
   filter: brightness(1.15);
+  box-shadow:
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.8),
+    0 12px 28px rgba(152, 51, 175, 0.5);
 }
 
-/* botão desabilitado fica apagado e sem o cursor de clique, para parecer que não dá para usar */
+.botao:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.5),
+    0 4px 12px rgba(152, 51, 175, 0.4);
+}
+
+/* botão desabilitado em vidro escuro legível, sem sumir no fundo */
 .botao:disabled {
-  opacity: 0.4;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(230, 198, 219, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none;
   cursor: not-allowed;
+  transform: none;
+  filter: none;
+  opacity: 1;
 }
 
-/* o botão "Escolher arquivo" vem com visual do navegador; ::file-selector-button estiliza só ele */
+/* o botão "Escolher arquivo" com acabamento nítido e alto contraste */
 input[type="file"] {
   color: var(--cor-texto-suave);
+  font: inherit;
 }
 
 input[type="file"]::file-selector-button {
-  background: var(--cor-fundo-secundario);
-  color: var(--cor-texto);
-  border: 1px solid var(--cor-borda);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  padding: 0.5rem 1.15rem;
   margin-right: 1rem;
   cursor: pointer;
+  font: inherit;
+  font-weight: 500;
+  font-size: 0.88rem;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ---------- página início ---------- */
+
+.inicio__cartao {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inicio__upload {
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: rgba(25, 0, 25, 0.45);
+  border: 1px dashed rgba(230, 198, 219, 0.25);
+  transition: border-color 0.2s;
+}
+
+.inicio__upload:hover {
+  border-color: rgba(230, 198, 219, 0.45);
 }
 
 /* ---------- títulos de página ---------- */
@@ -160,43 +216,37 @@ input[type="file"]::file-selector-button {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.75rem;
   padding: 1.25rem 1rem;
-  border-radius: 24px;
-  /* isolation cria um contexto próprio, assim o brilho (::before) fica atrás dos itens sem vazar */
+  border-radius: 26px;
   isolation: isolate;
-  /* o fundo é só um leve "leitoso" em degradê; quem faz o vidro é o blur + saturate + brightness */
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(255, 255, 255, 0.015) 45%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(43, 18, 76, 0.75) 0%,
+    rgba(25, 0, 25, 0.9) 100%
   );
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  backdrop-filter: blur(14px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  /* as sombras inset desenham a espessura do vidro: reflexo forte no topo, mais fraco nas laterais e na base
-     a última sombra (de fora) solta o painel do fundo */
+  -webkit-backdrop-filter: blur(16px) brightness(95%);
+  backdrop-filter: blur(16px) brightness(95%);
+  border: 1px solid rgba(230, 198, 219, 0.16);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    inset 1px 0 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 0 28px rgba(255, 255, 255, 0.06),
-    0 16px 40px rgba(0, 0, 0, 0.4);
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+    0 20px 48px -10px rgba(0, 0, 0, 0.65);
   transition: width 0.2s;
 }
 
-/* reflexo de luz no canto superior esquerdo, como a luz batendo na curva do vidro
-   o ::before fica atrás dos itens (z-index -1) e não atrapalha cliques */
+/* reflexo de luz sutil no canto do vidro */
 .sidebar::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background:
-    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
-    linear-gradient(180deg, transparent 70%, rgba(255, 255, 255, 0.03));
+  background: radial-gradient(
+    130% 75% at 20% 0%,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 60%
+  );
   pointer-events: none;
 }
 
@@ -255,26 +305,40 @@ input[type="file"]::file-selector-button {
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  border-radius: 12px;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: background 0.2s, box-shadow 0.2s;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu__item:hover .menu__quadrado {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.7),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.04);
 }
 
 /* o item da página atual vira um vidro tingido de roxo, com brilho em volta */
 .menu__item--ativo {
-  color: var(--cor-texto);
+  color: #ffffff;
   background: rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .menu__item--ativo .menu__quadrado {
-  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
-  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(178, 74, 130, 0.9), rgba(152, 51, 175, 0.95));
+  border-color: rgba(255, 255, 255, 0.45);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 4px 14px rgba(152, 51, 175, 0.45);
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.8),
+    0 4px 16px rgba(152, 51, 175, 0.5);
 }
 
 /* min-width: 0 deixa o conteúdo encolher; sem isso uma tabela larga estica a página em vez de rolar */
@@ -347,10 +411,10 @@ input[type="file"]::file-selector-button {
   color: var(--cor-texto-suave);
 }
 
-/* duas colunas: textos à esquerda, informações rápidas à direita; no tablet/celular viram uma só */
+/* duas colunas: texto do projeto à esquerda, informações rápidas à direita; no tablet/celular viram uma só */
 .sobre__grade {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.35fr 1fr;
   gap: 1rem;
   align-items: start;
 }
@@ -361,40 +425,83 @@ input[type="file"]::file-selector-button {
   gap: 1rem;
 }
 
-/* o mesmo vidro da sidebar, em versão para cartões */
+/* liquid glass escurecido (obsidian liquid glass): alto contraste, translucidez e elegância */
 .cartao-vidro {
-  padding: 1.25rem 1.5rem;
-  border-radius: 16px;
+  position: relative;
+  padding: 1.35rem 1.6rem;
+  border-radius: 20px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(255, 255, 255, 0.015) 45%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(43, 18, 76, 0.72) 0%,
+    rgba(25, 0, 25, 0.9) 100%
   );
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  backdrop-filter: blur(14px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(16px) brightness(95%);
+  backdrop-filter: blur(16px) brightness(95%);
+  border: 1px solid rgba(230, 198, 219, 0.16);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 8px 24px rgba(0, 0, 0, 0.25);
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.06),
+    0 16px 36px -8px rgba(0, 0, 0, 0.6),
+    0 2px 6px rgba(0, 0, 0, 0.25);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.cartao-vidro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    120% 70% at 20% 0%,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: -1;
 }
 
 .cartao-vidro h2 {
-  margin: 0 0 0.75rem;
-  font-size: 0.75rem;
+  margin: 0 0 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--cor-primaria);
+  color: #ffffff;
 }
 
 .cartao-vidro p {
   margin: 0;
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.7;
+  color: var(--cor-texto);
 }
 
-/* as listas de provedores e tecnologias viram "etiquetas" que quebram de linha quando faltar espaço */
+/* retângulo grande de destaque unificado na página Sobre */
+.sobre__destaque {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.75rem 2rem;
+}
+
+.sobre__destaque h2 {
+  margin: 0;
+}
+
+.sobre__destaque p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--cor-texto);
+}
+
+.sobre__destaque p strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* as listas de provedores e tecnologias viram "etiquetas" */
 .sobre__chips {
   display: flex;
   flex-wrap: wrap;
@@ -405,20 +512,26 @@ input[type="file"]::file-selector-button {
 }
 
 .sobre__chip {
-  padding: 0.35rem 0.8rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(230, 198, 219, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   font-size: 0.85rem;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .sobre__passos {
   margin: 0;
   padding-left: 1.25rem;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.8;
+  color: var(--cor-texto);
+}
+
+.sobre__passos strong {
+  color: #ffffff;
 }
 
 /* o cartão dos criadores ocupa a largura toda, abaixo das duas colunas */
@@ -441,12 +554,18 @@ input[type="file"]::file-selector-button {
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.25rem 1rem;
+  padding: 1.5rem 1rem;
   text-align: center;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  background: rgba(25, 0, 25, 0.45);
+  border: 1px solid rgba(230, 198, 219, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.criador:hover {
+  transform: translateY(-2px);
+  background: rgba(43, 18, 76, 0.55);
 }
 
 /* mesmo gradiente roxo do item ativo da sidebar */
@@ -460,8 +579,9 @@ input[type="file"]::file-selector-button {
   font-family: var(--fonte-titulo);
   font-weight: 900;
   font-size: 1.75rem;
-  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-destaque) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     0 4px 14px rgba(152, 51, 175, 0.45);
@@ -474,7 +594,10 @@ input[type="file"]::file-selector-button {
 }
 
 .criador__nome {
-  font-size: 1rem;
+  font-size: 1.05rem;
+  color: #ffffff;
+  font-weight: 700;
+  white-space: normal; /* nome completo visível sem cortes! */
 }
 
 .criador__funcao {
@@ -491,14 +614,14 @@ input[type="file"]::file-selector-button {
 
 /* reaproveita o .sobre__chip, só tira o sublinhado do link e acende ao passar o mouse */
 .criador__link {
-  color: var(--cor-texto);
+  color: #ffffff;
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
 }
 
 .criador__link:hover {
-  background: rgba(152, 51, 175, 0.35);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(152, 51, 175, 0.45);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 @media (max-width: 900px) {
@@ -509,13 +632,15 @@ input[type="file"]::file-selector-button {
 
 /* ---------- login ---------- */
 
-/* position: relative deixa o canvas (position: absolute) se encaixar dentro da tela de login */
+/* tela inteira com o fundo centralizado e o canvas atrás */
 .login {
   position: relative;
   overflow: hidden;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
   background: radial-gradient(ellipse at 30% 40%, rgba(95, 45, 145, 0.55) 0%, var(--cor-fundo) 65%);
 }
 
@@ -529,26 +654,34 @@ input[type="file"]::file-selector-button {
   pointer-events: none;
 }
 
-/* o z-index coloca o conteúdo por cima do canvas */
-.login__vitrine,
-.login__lado {
+/* container centralizado: aproxima a vitrine e o cartão para o centro da tela, sem o buracão */
+.login__container {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
-/* o brilho roxo atrás da nuvem faz ela parecer iluminada, e não colada no fundo */
+/* vitrine do lado esquerdo */
 .login__vitrine {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  padding: 3rem;
+  gap: 1.5rem;
+  padding: 1rem;
   text-align: center;
 }
 
 .login__nuvem {
-  width: min(380px, 70%);
+  width: min(300px, 80%);
+  filter: drop-shadow(0 16px 36px rgba(152, 51, 175, 0.35));
 }
 
 /* o movimento só roda para quem não pediu menos animação no sistema */
@@ -571,113 +704,149 @@ input[type="file"]::file-selector-button {
   font-weight: 900;
   font-size: 1.9rem;
   line-height: 1.15;
+  color: #ffffff;
 }
 
 .login__apoio {
   max-width: 38ch;
   margin: 0;
   color: var(--cor-texto-suave);
+  line-height: 1.6;
 }
 
+/* área do cartão no lado direito */
 .login__lado {
-  display: grid;
-  place-items: center;
-  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
+/* liquid glass escurecido no login: alto contraste e profundidade */
 .login__cartao {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 2rem;
-  /* o mesmo vidro da sidebar: os quadradinhos aparecem borrados atrás do formulário */
-  background: rgba(43, 18, 76, 0.55);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid rgba(230, 198, 219, 0.14);
-  border-radius: 12px;
+  gap: 1.5rem;
+  padding: 2.25rem 2rem;
+  border-radius: 26px;
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(43, 18, 76, 0.75) 0%,
+    rgba(25, 0, 25, 0.9) 100%
+  );
+  -webkit-backdrop-filter: blur(16px) brightness(95%);
+  backdrop-filter: blur(16px) brightness(95%);
+  border: 1px solid rgba(230, 198, 219, 0.18);
+  box-shadow:
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 48px -12px rgba(0, 0, 0, 0.7);
+}
+
+.login__cartao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    130% 75% at 20% 0%,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: -1;
 }
 
 .login__cartao h1 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #ffffff;
 }
 
 /* sem o gap os campos e o botão ficavam colados uns nos outros */
 .login__form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .login__form .botao {
   width: 100%;
+  margin-top: 0.5rem;
 }
 
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .campo label {
-  font-size: 0.9rem;
-  color: var(--cor-texto-suave);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--cor-texto);
 }
 
-/* o campo usa o mesmo vidro da sidebar: película branca bem leve, blur, borda clara e reflexo no topo */
+/* campos de entrada com contraste escuro refinado e texto nítido */
 .campo input {
-  padding: 0.7rem 0.9rem;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(255, 255, 255, 0.015) 45%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-  backdrop-filter: blur(14px) saturate(130%);
-  color: var(--cor-texto);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 0.75rem 1rem;
+  background: rgba(25, 0, 25, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(230, 198, 219, 0.2);
   border-radius: 14px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    inset 0 0 14px rgba(255, 255, 255, 0.04),
-    0 4px 14px rgba(0, 0, 0, 0.25);
+    inset 0 1px 1px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(255, 255, 255, 0.05);
   font: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .campo input::placeholder {
-  color: var(--cor-texto-suave);
+  color: rgba(230, 198, 219, 0.4);
 }
 
-/* ao digitar, a borda acende em roxo, como o item ativo da sidebar */
+/* ao digitar, o campo acende com o brilho roxo e reflexo nítido */
 .campo input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(25, 0, 25, 0.75);
+  border-color: rgba(230, 198, 219, 0.5);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 0 14px rgba(255, 255, 255, 0.04),
-    0 0 0 3px rgba(152, 51, 175, 0.35),
-    0 4px 14px rgba(0, 0, 0, 0.25);
+    0 0 0 3px rgba(152, 51, 175, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .login__alternar {
   padding: 0;
   background: none;
   border: none;
-  color: var(--cor-texto);
+  color: #ffffff;
   font: inherit;
+  font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
+  transition: color 0.2s;
 }
 
-/* no celular a vitrine some e fica só o formulário */
-@media (max-width: 800px) {
-  .login {
+.login__alternar:hover {
+  color: var(--cor-destaque);
+}
+
+/* no celular/tablet centraliza tudo */
+@media (max-width: 880px) {
+  .login__container {
     grid-template-columns: 1fr;
+    max-width: 440px;
+    gap: 2rem;
   }
 
   .login__vitrine {

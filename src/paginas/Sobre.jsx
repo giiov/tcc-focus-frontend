@@ -52,37 +52,20 @@ function Sobre() {
       </header>
 
       <div className="sobre__grade">
+        {/*coluna esquerda: o retângulo grande com a explicação resumida*/}
         <div className="sobre__coluna">
-          <article className="cartao-vidro">
-            <h2>O que é o FOCUS Multi-Cloud?</h2>
+          <article className="cartao-vidro sobre__destaque">
+            <h2>Sobre o Projeto</h2>
             <p>
-              O FOCUS Multi-Cloud é uma ferramenta desenvolvida como Trabalho de Conclusão de Curso (TCC) que
-              recebe arquivos de custos de diferentes provedores de nuvem, identifica automaticamente o formato
-              de origem e converte os dados para o padrão FOCUS — permitindo comparar e analisar gastos
-              multi-cloud em uma estrutura única e consistente.
+              O <strong>FOCUS Multi-Cloud</strong> é uma ferramenta desenvolvida como Trabalho de Conclusão de Curso (TCC) para unificar e simplificar a gestão e análise de custos em ambientes multi-cloud.
             </p>
-          </article>
-
-          <article className="cartao-vidro">
-            <h2>O padrão FOCUS</h2>
             <p>
-              <strong>FOCUS</strong> (FinOps Open Cost and Usage Specification) é um padrão aberto mantido pela
-              FinOps Foundation que define um esquema comum para dados de custo e uso de serviços cloud. O
-              objetivo é eliminar as diferenças de nomenclatura e estrutura entre provedores, permitindo que
-              times de FinOps analisem custos multi-cloud de forma direta e comparável.
-            </p>
-          </article>
-
-          <article className="cartao-vidro">
-            <h2>Objetivo do projeto</h2>
-            <p>
-              Demonstrar como a adoção do padrão FOCUS pode simplificar a análise de custos em ambientes
-              multi-cloud, reduzindo o esforço manual de normalização de dados e possibilitando uma visão
-              unificada dos gastos independentemente do provedor utilizado.
+              Adotando a especificação aberta <strong>FOCUS</strong> (FinOps Open Cost and Usage Specification), mantida pela FinOps Foundation, o sistema identifica e converte relatórios de faturamento da AWS, Azure, GCP e Oracle para um esquema padronizado — eliminando divergências de nomenclatura e possibilitando comparar gastos de forma centralizada e direta.
             </p>
           </article>
         </div>
 
+        {/*coluna direita: os blocos que estavam bons (provedores, tecnologias e como usar)*/}
         <div className="sobre__coluna">
           <article className="cartao-vidro">
             <h2>Provedores suportados</h2>
