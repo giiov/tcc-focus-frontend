@@ -185,7 +185,7 @@ function FundoQuadrados() {
       document.addEventListener("mouseleave", aoSairDaJanela);
     }
 
-    //a função devolvida roda quando o componente sai da tela: sem essa limpeza, os ouvintes ficariam ativos para sempre
+    //a função devolvida roda quando o componente sai da tela
     return () => {
       cancelAnimationFrame(quadro);
       observador.disconnect();

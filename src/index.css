@@ -43,9 +43,10 @@ body {
   background-image:
     radial-gradient(ellipse at 15% 0%, rgba(95, 45, 145, 0.5), transparent 55%),
     radial-gradient(ellipse at 95% 100%, rgba(178, 74, 130, 0.2), transparent 50%),
+    radial-gradient(circle at 0% 75%, rgba(95, 45, 145, 0.55), transparent 35%),
     linear-gradient(rgba(95, 45, 145, 0.2) 1px, transparent 1px),
     linear-gradient(90deg, rgba(95, 45, 145, 0.2) 1px, transparent 1px);
-  background-size: auto, auto, 44px 44px, 44px 44px;
+  background-size: auto, auto, auto, 44px 44px, 44px 44px;
   background-attachment: fixed;
   color: var(--cor-texto);
   font-family: var(--fonte-texto);
@@ -147,24 +148,56 @@ input[type="file"]::file-selector-button {
   min-height: 100vh;
 }
 
-/* sticky + height:100vh deixa a sidebar parada na tela enquanto só o conteúdo rola */
+/* liquid glass: a sidebar vira um painel flutuante de cantos bem redondos
+   sticky + height deixa o painel parado na tela enquanto só o conteúdo rola
+   o margin cria o espaço em volta, que faz ela parecer solta do canto da janela */
 .sidebar {
   position: sticky;
-  top: 0;
+  top: 12px;
   width: 240px;
-  height: 100vh;
+  height: calc(100vh - 24px);
+  margin: 12px 0 12px 12px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1rem;
-  /* efeito vidro: o fundo é semitransparente e o backdrop-filter borra o que está atrás dele
-     saturate devolve a cor que o blur "lava"; o prefixo -webkit- é para o Safari */
-  background: rgba(43, 18, 76, 0.4);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
-  border-right: 1px solid rgba(230, 198, 219, 0.12);
+  gap: 2rem;
+  padding: 1.25rem 1rem;
+  border-radius: 24px;
+  /* isolation cria um contexto próprio, assim o brilho (::before) fica atrás dos itens sem vazar */
+  isolation: isolate;
+  /* o fundo é só um leve "leitoso" em degradê; quem faz o vidro é o blur + saturate + brightness */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  /* as sombras inset desenham a espessura do vidro: reflexo forte no topo, mais fraco nas laterais e na base
+     a última sombra (de fora) solta o painel do fundo */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 28px rgba(255, 255, 255, 0.06),
+    0 16px 40px rgba(0, 0, 0, 0.4);
   transition: width 0.2s;
+}
+
+/* reflexo de luz no canto superior esquerdo, como a luz batendo na curva do vidro
+   o ::before fica atrás dos itens (z-index -1) e não atrapalha cliques */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, transparent 70%, rgba(255, 255, 255, 0.03));
+  pointer-events: none;
 }
 
 /* na sidebar o nome fica em duas linhas, senão não cabe ao lado da nuvem */
@@ -181,13 +214,13 @@ input[type="file"]::file-selector-button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .sidebar__rodape {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 /* serve para o link (NavLink/Link) e para o botão de recolher, que precisam ter a mesma cara */
@@ -198,39 +231,50 @@ input[type="file"]::file-selector-button {
   width: 100%;
   padding: 0.25rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 16px;
   background: none;
   color: var(--cor-texto-suave);
   font: inherit;
   text-decoration: none;
   text-align: left;
   cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
+/* ao passar o mouse, o item ganha uma "pílula" de vidro clarinha */
 .menu__item:hover {
   color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* o quadradinho do ícone lembra os cubos que orbitam a nuvem no logo */
+/* o quadradinho do ícone lembra os cubos que orbitam a nuvem no logo
+   agora é um pedacinho de vidro, com o mesmo reflexo no topo da sidebar */
 .menu__quadrado {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  border-radius: 8px;
-  background: rgba(25, 0, 25, 0.35);
-  border: 1px solid var(--cor-borda);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
-/* o item da página atual ganha o quadrado preenchido, para o usuário saber onde está */
+/* o item da página atual vira um vidro tingido de roxo, com brilho em volta */
 .menu__item--ativo {
   color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .menu__item--ativo .menu__quadrado {
-  background: var(--cor-primaria);
-  border-color: var(--cor-primaria);
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
 }
 
 /* min-width: 0 deixa o conteúdo encolher; sem isso uma tabela larga estica a página em vez de rolar */
@@ -241,22 +285,35 @@ input[type="file"]::file-selector-button {
 }
 
 /* sidebar recolhida: some o texto e sobram só os quadradinhos
-   no celular a regra é a mesma, porque não há espaço para a sidebar aberta */
+   no celular a regra é a mesma, porque não há espaço para a sidebar aberta
+   o padding lateral menor + justify-content: center deixam os quadradinhos centralizados no painel arredondado */
 .layout--recolhido .sidebar {
   width: 72px;
+  padding: 1.25rem 0.5rem;
 }
 
 .layout--recolhido .menu__rotulo {
   display: none;
 }
 
+.layout--recolhido .menu__item,
+.layout--recolhido .logo {
+  justify-content: center;
+}
+
 @media (max-width: 700px) {
   .sidebar {
     width: 72px;
+    padding: 1.25rem 0.5rem;
   }
 
   .menu__rotulo {
     display: none;
+  }
+
+  .menu__item,
+  .sidebar .logo {
+    justify-content: center;
   }
 
   .conteudo {
@@ -384,13 +441,41 @@ input[type="file"]::file-selector-button {
   color: var(--cor-texto-suave);
 }
 
+/* o campo usa o mesmo vidro da sidebar: película branca bem leve, blur, borda clara e reflexo no topo */
 .campo input {
-  padding: 0.7rem 0.8rem;
-  background: var(--cor-fundo);
+  padding: 0.7rem 0.9rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
   color: var(--cor-texto);
-  border: 1px solid var(--cor-borda);
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 14px rgba(255, 255, 255, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.25);
   font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+/* ao digitar, a borda acende em roxo, como o item ativo da sidebar */
+.campo input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 0 14px rgba(255, 255, 255, 0.04),
+    0 0 0 3px rgba(152, 51, 175, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 .login__alternar {
