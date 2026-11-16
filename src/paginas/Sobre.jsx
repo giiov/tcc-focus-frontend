@@ -5,13 +5,33 @@ const PROVEDORES = ["AWS", "Microsoft Azure", "Google Cloud", "Oracle Cloud"];
 
 const TECNOLOGIAS = ["Python", "FastAPI", "Pandas", "React", "Vite"];
 
-//cada passo pode ter uma parte em destaque (negrito), por isso é um par [texto, destaque]
+//cada passo do guia de uso estruturado com numero, titulo e descricao
 const PASSOS = [
-  ["Acesse a aba ", "Início"],
-  ["Envie um arquivo CSV de custos cloud", ""],
-  ["O sistema detecta o provedor automaticamente", ""],
-  ["Explore os dados na aba ", "Dados"],
-  ["Visualize os gráficos em ", "Gráficos"],
+  {
+    passo: "1",
+    titulo: "Acessar Início",
+    descricao: "Navegue até a aba Início através do menu de navegação lateral.",
+  },
+  {
+    passo: "2",
+    titulo: "Enviar CSV",
+    descricao: "Envie um arquivo CSV de faturamento de qualquer nuvem suportada.",
+  },
+  {
+    passo: "3",
+    titulo: "Detecção Automática",
+    descricao: "O sistema detecta AWS, Azure, GCP ou Oracle e converte para FOCUS.",
+  },
+  {
+    passo: "4",
+    titulo: "Explorar Dados",
+    descricao: "Analise a tabela com dados normalizados e aplique filtros na aba Dados.",
+  },
+  {
+    passo: "5",
+    titulo: "Visualizar Gráficos",
+    descricao: "Examine gráficos de custos consolidados e tendências em Gráficos.",
+  },
 ];
 
 //troque pelos dados reais de vocês; se alguém não tiver um dos links, deixe a string vazia que o botão some
@@ -53,19 +73,17 @@ function Sobre() {
 
       <div className="sobre__grade">
         {/*coluna esquerda: o retângulo grande com a explicação resumida*/}
-        <div className="sobre__coluna">
-          <article className="cartao-vidro sobre__destaque">
-            <h2>Sobre o Projeto</h2>
-            <p>
-              O <strong>FOCUS Multi-Cloud</strong> é uma ferramenta desenvolvida como Trabalho de Conclusão de Curso (TCC) para unificar e simplificar a gestão e análise de custos em ambientes multi-cloud.
-            </p>
-            <p>
-              Adotando a especificação aberta <strong>FOCUS</strong> (FinOps Open Cost and Usage Specification), mantida pela FinOps Foundation, o sistema identifica e converte relatórios de faturamento da AWS, Azure, GCP e Oracle para um esquema padronizado — eliminando divergências de nomenclatura e possibilitando comparar gastos de forma centralizada e direta.
-            </p>
-          </article>
-        </div>
+        <article className="cartao-vidro sobre__destaque">
+          <h2>Sobre o Projeto</h2>
+          <p>
+            O <strong>FOCUS Multi-Cloud</strong> é uma ferramenta desenvolvida como Trabalho de Conclusão de Curso (TCC) para unificar e simplificar a gestão e análise de custos em ambientes multi-cloud.
+          </p>
+          <p>
+            Adotando a especificação aberta <strong>FOCUS</strong> (FinOps Open Cost and Usage Specification), mantida pela FinOps Foundation, o sistema identifica e converte relatórios de faturamento da AWS, Azure, GCP e Oracle para um esquema padronizado — eliminando divergências de nomenclatura e possibilitando comparar gastos de forma centralizada e direta.
+          </p>
+        </article>
 
-        {/*coluna direita: os blocos que estavam bons (provedores, tecnologias e como usar)*/}
+        {/*coluna direita: os blocos de provedores e tecnologias*/}
         <div className="sobre__coluna">
           <article className="cartao-vidro">
             <h2>Provedores suportados</h2>
@@ -88,20 +106,24 @@ function Sobre() {
               ))}
             </ul>
           </article>
-
-          <article className="cartao-vidro">
-            <h2>Como usar</h2>
-            <ol className="sobre__passos">
-              {PASSOS.map(([texto, destaque]) => (
-                <li key={texto + destaque}>
-                  {texto}
-                  {destaque && <strong>{destaque}</strong>}
-                </li>
-              ))}
-            </ol>
-          </article>
         </div>
       </div>
+
+      {/*como usar esticado ocupando a largura toda entre a grade e a equipe, dividido em passos modernos*/}
+      <article className="cartao-vidro sobre__como-usar">
+        <h2>Como usar</h2>
+        <div className="sobre__passos-grid">
+          {PASSOS.map((item) => (
+            <div key={item.passo} className="passo-card">
+              <div className="passo-card__topo">
+                <span className="passo-card__numero">{item.passo}</span>
+              </div>
+              <h3 className="passo-card__titulo">{item.titulo}</h3>
+              <p className="passo-card__desc">{item.descricao}</p>
+            </div>
+          ))}
+        </div>
+      </article>
 
       {/*fica fora da grade de duas colunas para ocupar a largura toda, como um rodapé da página*/}
       <article className="cartao-vidro sobre__criadores">
