@@ -8,15 +8,13 @@ const LIMITE_MB = 50;
 //no vite, só variáveis que começam com VITE_ chegam ao código do navegador
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Inicio() {
+function Inicio({ resultado, setResultado })  {
   //arquivo guarda o csv escolhido (ou null se ainda não escolheu nenhum)
   const [arquivo, setArquivo] = useState(null);
   //erro guarda a mensagem para o usuário (ou "" quando está tudo certo)
   const [erro, setErro] = useState("");
   //enviando evita cliques repetidos enquanto a api trabalha
   const [enviando, setEnviando] = useState(false);
-  //resultado guarda a resposta da api (formato, total de linhas, amostra...) ou null
-  const [resultado, setResultado] = useState(null);
 
   function escolherArquivo(evento) {
     //files é uma lista; pegamos só o primeiro porque o input aceita um arquivo por vez
