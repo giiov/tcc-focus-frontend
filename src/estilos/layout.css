@@ -1,0 +1,180 @@
+/* ---------- layout: sidebar + conteúdo ---------- */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* liquid glass: a sidebar vira um painel flutuante de cantos bem redondos
+   sticky + height deixa o painel parado na tela enquanto só o conteúdo rola
+   o margin cria o espaço em volta, que faz ela parecer solta do canto da janela */
+.sidebar {
+  position: sticky;
+  top: 12px;
+  width: 240px;
+  height: calc(100vh - 24px);
+  margin: 12px 0 12px 12px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.25rem 1rem;
+  border-radius: 24px;
+  /* isolation cria um contexto próprio, assim o brilho (::before) fica atrás dos itens sem vazar */
+  isolation: isolate;
+  /* o fundo é só um leve "leitoso" em degradê; quem faz o vidro é o blur + saturate + brightness */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  /* as sombras inset desenham a espessura do vidro: reflexo forte no topo, mais fraco nas laterais e na base
+     a última sombra (de fora) solta o painel do fundo */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 28px rgba(255, 255, 255, 0.06),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+  transition: width 0.2s;
+}
+
+/* reflexo de luz no canto superior esquerdo, como a luz batendo na curva do vidro
+   o ::before fica atrás dos itens (z-index -1) e não atrapalha cliques */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, transparent 70%, rgba(255, 255, 255, 0.03));
+  pointer-events: none;
+}
+
+/* na sidebar o nome fica em duas linhas, senão não cabe ao lado da nuvem */
+.sidebar .logo__texto {
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.sidebar .logo__focus {
+  display: block;
+}
+
+.menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar__rodape {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* serve para o link (NavLink/Link) e para o botão de recolher, que precisam ter a mesma cara */
+.menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.25rem;
+  border: none;
+  border-radius: 16px;
+  background: none;
+  color: var(--cor-texto-suave);
+  font: inherit;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ao passar o mouse, o item ganha uma "pílula" de vidro clarinha */
+.menu__item:hover {
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* o quadradinho do ícone lembra os cubos que orbitam a nuvem no logo
+   agora é um pedacinho de vidro, com o mesmo reflexo no topo da sidebar */
+.menu__quadrado {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+/* o item da página atual vira um vidro tingido de roxo, com brilho em volta */
+.menu__item--ativo {
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.menu__item--ativo .menu__quadrado {
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
+}
+
+/* min-width: 0 deixa o conteúdo encolher; sem isso uma tabela larga estica a página em vez de rolar */
+.conteudo {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+/* sidebar recolhida: some o texto e sobram só os quadradinhos
+   no celular a regra é a mesma, porque não há espaço para a sidebar aberta
+   o padding lateral menor + justify-content: center deixam os quadradinhos centralizados no painel arredondado */
+.layout--recolhido .sidebar {
+  width: 72px;
+  padding: 1.25rem 0.5rem;
+}
+
+.layout--recolhido .menu__rotulo {
+  display: none;
+}
+
+.layout--recolhido .menu__item,
+.layout--recolhido .logo {
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    width: 72px;
+    padding: 1.25rem 0.5rem;
+  }
+
+  .menu__rotulo {
+    display: none;
+  }
+
+  .menu__item,
+  .sidebar .logo {
+    justify-content: center;
+  }
+
+  .conteudo {
+    padding: 1.25rem;
+  }
+}
+

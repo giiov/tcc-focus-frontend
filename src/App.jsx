@@ -7,6 +7,8 @@ import Inicio from "./paginas/Inicio";
 import Login from "./paginas/Login";
 import Placeholder from "./paginas/Placeholder";
 import Sobre from "./paginas/Sobre";
+import Dados from "./paginas/Dados";
+import Historico from "./paginas/Historico";
 
 //o App agora só decide qual página aparece em cada endereço
 function App() {
@@ -23,10 +25,10 @@ function App() {
       <Route element={<Layout />}>
         {/*o Inicio recebe os dois porque é ele que escreve o resultado depois do upload*/}
         <Route path="/" element={<Inicio resultado={resultado} setResultado={setResultado} />} />
-        <Route path="/dados" element={<Placeholder titulo="Dados" descricao="Aqui vai a tabela FOCUS." />} />
+        <Route path="/dados" element={<Dados resultado={resultado} />} />
+        <Route path="/historico" element={<Historico />} />
         {/*o Graficos só lê o resultado, por isso não recebe o setResultado*/}
         <Route path="/graficos" element={<Graficos resultado={resultado} />} />
-        <Route path="/historico" element={<Placeholder titulo="Histórico" descricao="Aqui vão as conversões anteriores." />} />
         <Route path="/assistente" element={<Assistente />} />
         <Route path="/sobre" element={<Sobre />} />
       </Route>

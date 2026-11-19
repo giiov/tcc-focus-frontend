@@ -1,0 +1,233 @@
+/* ---------- login ---------- */
+
+/* tela inteira com o fundo centralizado e o canvas atrás */
+.login {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(95, 45, 145, 0.5), transparent 55%),
+    radial-gradient(ellipse at 95% 100%, rgba(178, 74, 130, 0.2), transparent 50%),
+    radial-gradient(circle at 0% 75%, rgba(95, 45, 145, 0.55), transparent 35%),
+    linear-gradient(rgba(95, 45, 145, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 45, 145, 0.2) 1px, transparent 1px);
+  background-size: auto, auto, auto, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+}
+
+/* o canvas ocupa a tela toda por trás do conteúdo
+   pointer-events: none evita que ele atrapalhe cliques */
+.fundo-quadrados {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* container centralizado: aproxima a vitrine e o cartão para o centro da tela, sem o buracão */
+.login__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* vitrine do lado esquerdo */
+.login__vitrine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.login__nuvem {
+  width: min(300px, 80%);
+  filter: drop-shadow(0 16px 36px rgba(152, 51, 175, 0.35));
+}
+
+/* o movimento só roda para quem não pediu menos animação no sistema */
+@media (prefers-reduced-motion: no-preference) {
+  .login__nuvem {
+    animation: flutuar 6s ease-in-out infinite;
+  }
+}
+
+@keyframes flutuar {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.login__chamada {
+  max-width: 22ch;
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.9rem;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.login__apoio {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--cor-texto-suave);
+  line-height: 1.6;
+}
+
+/* área do cartão no lado direito */
+.login__lado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* liquid glass idêntico ao da sidebar: a mesma cor de fundo, blur, borda e reflexo */
+.login__cartao {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.25rem 2rem;
+  border-radius: 24px;
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 28px rgba(255, 255, 255, 0.06),
+    0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.login__cartao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(180deg, transparent 70%, rgba(255, 255, 255, 0.03));
+  pointer-events: none;
+  z-index: -1;
+}
+
+.login__cartao h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+/* sem o gap os campos e o botão ficavam colados uns nos outros */
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.login__form .botao {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.campo label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+/* campos de entrada com contraste escuro refinado e texto nítido */
+.campo input {
+  padding: 0.75rem 1rem;
+  background: rgba(25, 0, 25, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(230, 198, 219, 0.2);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(255, 255, 255, 0.05);
+  font: inherit;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.campo input::placeholder {
+  color: rgba(230, 198, 219, 0.4);
+}
+
+/* ao digitar, o campo acende com o brilho roxo e reflexo nítido */
+.campo input:focus {
+  outline: none;
+  background: rgba(25, 0, 25, 0.75);
+  border-color: rgba(230, 198, 219, 0.5);
+  box-shadow:
+    0 0 0 3px rgba(152, 51, 175, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.login__alternar {
+  padding: 0;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.login__alternar:hover {
+  color: var(--cor-destaque);
+}
+
+/* no celular/tablet centraliza tudo */
+@media (max-width: 880px) {
+  .login__container {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    gap: 2rem;
+  }
+
+  .login__vitrine {
+    display: none;
+  }
+}
+

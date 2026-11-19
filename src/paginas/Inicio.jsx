@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { salvarConversao } from "../servicos/historico";
 
 //limite do plano grátis do supabase storage (50 MB por arquivo)
 //validar aqui avisa o usuário na hora, sem esperar o envio falhar lá na frente
@@ -69,6 +70,20 @@ function Inicio({ resultado, setResultado })  {
       }
 
       setResultado(corpo);
+
+      //TODO(banco): hoje salvarConversao não faz nada; quando o banco for ligado, cada conversão cai no histórico
+      //try/catch próprio: falhar ao salvar no histórico não pode estragar uma conversão que deu certo
+      try {
+        await salvarConversao({
+          nome_arquivo: arquivo.name,
+          formato: corpo.formato,
+          total_linhas: corpo.total_linhas,
+        });
+      } catch (e) {
+        console.error("Não foi possível salvar no histórico:", e);
+      }
+
+      
     } catch {
       //cai aqui quando nem chegou na api: servidor desligado, endereço errado ou CORS
       setErro("Não consegui falar com o servidor. Confira se a API está rodando.");

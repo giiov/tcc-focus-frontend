@@ -1,0 +1,14 @@
+/* ==========================================================================
+   FOCUS Multi-Cloud - Estilos Principais
+   Arquitetura modular de estilos da aplicação
+   ========================================================================== */
+
+@import "./variaveis.css";
+@import "./global.css";
+@import "./componentes.css";
+@import "./layout.css";
+@import "./login.css";
+@import "./sobre.css";
+@import "./assistente.css";
+@import "./graficos.css";
+

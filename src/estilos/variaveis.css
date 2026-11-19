@@ -1,0 +1,30 @@
+/* fonte do título (a mesma do logo), copiada do projeto antigo
+   font-display: swap mostra o texto com uma fonte reserva enquanto a Trap Black carrega, em vez de deixar a tela em branco */
+@font-face {
+  font-family: "Trap";
+  src: url("../assets/fonts/Trap-Black-900.otf") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* cores da paleta oficial, cada uma com um papel
+   ficam em variáveis para mudar uma cor em um lugar só */
+:root {
+  --cor-fundo: #190019;
+  --cor-fundo-secundario: #2b124c;
+  --cor-roxo-medio: #5f2d91;
+  --cor-primaria: #9833af;
+  --cor-destaque: #b24a82;
+  --cor-texto: #e6c6db;
+
+  /* versões mais fracas do texto e da borda, feitas com transparência para combinar com qualquer fundo */
+  --cor-texto-suave: rgba(230, 198, 219, 0.7);
+  --cor-borda: rgba(95, 45, 145, 0.6);
+
+  /* a paleta não tem vermelho, então o erro ganha uma cor própria para chamar atenção */
+  --cor-erro: #ff6b8a;
+
+  --fonte-titulo: "Trap", "Inter", sans-serif;
+  --fonte-texto: "Inter", sans-serif;
+}
+

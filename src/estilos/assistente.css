@@ -1,0 +1,236 @@
+/* ---------- assistente (Ada) ---------- */
+
+/* a página ocupa a altura da janela (menos o padding do .conteudo), e só a área de mensagens rola */
+.ada {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: calc(100vh - 4rem);
+  min-height: 420px;
+}
+
+.ada .pagina__titulo {
+  margin: 0;
+}
+
+.ada__subtitulo {
+  margin: -0.5rem 0 0;
+}
+
+.ada__conversa {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+}
+
+.ada__vazio {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.ada__vazio p {
+  color: var(--cor-texto-suave);
+}
+
+.ada__sugestoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* botão de vidro, igual às etiquetas da página Sobre, só que clicável */
+.ada__sugestao {
+  padding: 0.4rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: var(--cor-texto);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ada__sugestao:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.ada__msg {
+  display: flex;
+  gap: 0.6rem;
+  max-width: 85%;
+}
+
+/* a mensagem do usuário vai para a direita, a da Ada fica na esquerda com o avatar */
+.ada__msg--usuario {
+  align-self: flex-end;
+}
+
+.ada__msg--ada {
+  align-self: flex-start;
+}
+
+.ada__avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ada__avatar--grande {
+  width: 48px;
+  height: 48px;
+}
+
+.ada__balao {
+  padding: 0.6rem 0.9rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  /* sem isso uma palavra muito longa (ou tabela) estica o balão para fora da tela */
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ada__msg--usuario .ada__balao {
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.55), rgba(95, 45, 145, 0.45));
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* só o balão do usuário usa pre-wrap, para manter as quebras de linha que ele digitou
+   na resposta da Ada isso criaria linhas em branco extras entre os parágrafos do markdown */
+.ada__msg--usuario .ada__balao {
+  white-space: pre-wrap;
+}
+
+.ada__balao p {
+  margin: 0 0 0.5rem;
+}
+
+.ada__balao > :last-child {
+  margin-bottom: 0;
+}
+
+.ada__balao ul,
+.ada__balao ol {
+  margin: 0 0 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.ada__balao code {
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  background: rgba(25, 0, 25, 0.45);
+  font-size: 0.85em;
+}
+
+/* tabelas largas rolam para o lado em vez de estourar o balão */
+.ada__balao table {
+  display: block;
+  overflow-x: auto;
+  margin-bottom: 0.5rem;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.ada__balao th,
+.ada__balao td {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: left;
+}
+
+.ada__form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+/* a caixa de texto usa o mesmo vidro dos campos do login */
+.ada__entrada {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  resize: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.015) 45%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
+  color: var(--cor-texto);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.25);
+  font: inherit;
+}
+
+.ada__entrada::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+.ada__entrada:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 0 3px rgba(152, 51, 175, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* botão de enviar: quadrado de vidro roxo, igual ao item ativo da sidebar */
+.ada__enviar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.ada__enviar:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.ada__enviar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .ada {
+    height: calc(100vh - 2.5rem);
+  }
+
+  .ada__msg {
+    max-width: 95%;
+  }
+}
+
