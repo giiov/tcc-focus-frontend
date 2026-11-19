@@ -1,0 +1,62 @@
+/* ---------- página de dados (tabela do csv) ---------- */
+
+/* linha de cima do cartão: o resumo à esquerda e o botão de baixar à direita */
+.dados__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* versão menor do botão padrão, com o ícone ao lado do texto */
+.botao--pequeno {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.8rem;
+}
+
+/* a rolagem (horizontal e vertical) fica aqui dentro, e não na página inteira */
+.tabela__rolagem {
+  margin-top: 0.75rem;
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+}
+
+/* nowrap mantém cada célula em uma linha só (datas não quebram mais) */
+.tabela th,
+.tabela td {
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* o cabeçalho fica grudado no topo enquanto a tabela rola; precisa de fundo sólido para não ver as linhas passando por baixo */
+.tabela th {
+  position: sticky;
+  top: 0;
+  background: var(--cor-fundo-secundario);
+  color: var(--cor-texto);
+  font-weight: 600;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela td {
+  color: var(--cor-texto-suave);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tabela tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cor-texto);
+}
