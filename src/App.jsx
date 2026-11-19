@@ -5,22 +5,24 @@ import Inicio from "./paginas/Inicio";
 import Login from "./paginas/Login";
 import Placeholder from "./paginas/Placeholder";
 import Sobre from "./paginas/Sobre";
+import RotaProtegida from "./componentes/RotaProtegida";
 
 //o App agora só decide qual página aparece em cada endereço
 function App() {
   return (
     <Routes>
-      {/*o login fica fora do Layout porque não tem sidebar*/}
       <Route path="/login" element={<Login />} />
 
-      {/*as rotas de dentro aparecem no lugar do Outlet do Layout, então todas ganham a sidebar*/}
-      <Route element={<Layout />}>
-        <Route path="/" element={<Inicio />} />
-        <Route path="/dados" element={<Placeholder titulo="Dados" descricao="Aqui vai a tabela FOCUS." />} />
-        <Route path="/graficos" element={<Placeholder titulo="Gráficos" descricao="Aqui vão os gráficos." />} />
-        <Route path="/historico" element={<Placeholder titulo="Histórico" descricao="Aqui vão as conversões anteriores." />} />
-        <Route path="/assistente" element={<Assistente />} />
-        <Route path="/sobre" element={<Sobre />} />
+      {/*tudo que está aqui dentro só abre para quem está logado*/}
+      <Route element={<RotaProtegida />}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/dados" element={<Placeholder titulo="Dados" descricao="Aqui vai a tabela FOCUS." />} />
+          <Route path="/graficos" element={<Placeholder titulo="Gráficos" descricao="Aqui vão os gráficos." />} />
+          <Route path="/historico" element={<Placeholder titulo="Histórico" descricao="Aqui vão as conversões anteriores." />} />
+          <Route path="/assistente" element={<Assistente />} />
+          <Route path="/sobre" element={<Sobre />} />
+        </Route>
       </Route>
     </Routes>
   );

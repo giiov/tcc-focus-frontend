@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../contexto/AuthContext";
 
 const LIMITE_MB = 50;
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Inicio() {
-  const { carregando } = useAuth();
   // guarda o arquivo selecionado
   const [arquivo, setArquivo] = useState(null);
   // guarda mensagens de erro
@@ -15,10 +13,6 @@ function Inicio() {
   const [enviando, setEnviando] = useState(false);
   // guarda o resultado da conversão
   const [resultado, setResultado] = useState(null);
-
-  if (carregando) {
-    return <p>Carregando...</p>;
-  }
 
   function escolherArquivo(evento) {
     const escolhido = evento.target.files[0];
