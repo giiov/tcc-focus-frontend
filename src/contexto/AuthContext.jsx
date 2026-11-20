@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
       .catch(() => setSessao(null))
       .finally(() => setCarregando(false));
 
-      
+
     // adiciona um listener para mudanças na sessão
     const { data: { subscription } } = supabase.auth.onAuthStateChange((evento, novaSessao) => {
       setSessao(novaSessao);
@@ -39,6 +39,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const contexto = useContext(AuthContext);
   if (!contexto) {
