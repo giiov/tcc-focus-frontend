@@ -9,15 +9,19 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
 
-    // lê a sessão atual do supabase e salva no estado
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSessao(session);
-      setCarregando(false);
-    });
+    //lê a sessão atual do supabase e salva no estado
+    //o finally garante que "carregando" termina mesmo se a leitura falhar; sem ele a tela
+    //ficaria em "Carregando..." para sempre
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => setSessao(session))
+      .catch(() => setSessao(null))
+      .finally(() => setCarregando(false));
 
+      
     // adiciona um listener para mudanças na sessão
-    const {data: { subscription }} = supabase.auth.onAuthStateChange((evento, novaSessao) => {
-        setSessao(novaSessao);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((evento, novaSessao) => {
+      setSessao(novaSessao);
     });
 
     // retorna uma função de limpeza que remove o listener quando o componente é desmontado
