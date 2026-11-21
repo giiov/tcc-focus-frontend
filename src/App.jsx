@@ -1,3 +1,4 @@
+import Perfil from "./paginas/Perfil";
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./componentes/Layout";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Inicio resultado={resultado} setResultado={setResultado} />} />
           <Route path="/dados" element={<Dados resultado={resultado} />} />
           <Route path="/historico" element={<Historico />} />
+          <Route path="/perfil" element={<Perfil />} />
           {/*o Graficos só lê o resultado, por isso não recebe o setResultado*/}
           <Route path="/graficos" element={<Graficos resultado={resultado} />} />
           <Route path="/assistente" element={<Assistente />} />

@@ -1,4 +1,4 @@
-
+import { useAuth } from "../contexto/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -32,6 +32,8 @@ function Assistente() {
 
   // texto digitado pelo usuário
   const [texto, setTexto] = useState("");
+
+  const { usuario } = useAuth();
 
   // estados de carregamento
   const [carregando, setCarregando] = useState(false);
@@ -307,7 +309,12 @@ function Assistente() {
         `/conversas/${idAtual}/mensagens`,
         {
           method: "POST",
-          json: { content: conteudo },
+          json: {
+            content: conteudo,
+            //envia o perfil salvo no Supabase Auth para o backend personalizar o prompt da Ada
+            cargo: usuario?.user_metadata?.cargo ?? null,
+            provedores: usuario?.user_metadata?.provedores ?? null,
+          },
         }
       );
 

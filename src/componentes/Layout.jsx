@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Link, Outlet } from "react-router-dom";
 import {
   ChartColumn,
   History,
@@ -10,6 +10,7 @@ import {
   PanelLeftOpen,
   Sparkles,
   Table,
+  UserCircle,
 } from "lucide-react";
 import Logo from "./Logo";
 import { supabase } from "../lib/supabase";
@@ -86,12 +87,23 @@ function Layout() {
             </span>
             <span className="menu__rotulo">Sair</span>
           </button>
-
         </div>
       </aside>
 
-      {/*o Outlet é o buraco onde o react router coloca a página escolhida (Início, Dados...)*/}
+      {/*o conteúdo tem um cabeçalho com o ícone de perfil flutuando no canto superior direito
+          e abaixo o Outlet que renderiza a página atual (Início, Dados, Gráficos...)*/}
       <main className="conteudo">
+        <div className="conteudo__cabecalho">
+          <Link
+            to="/perfil"
+            className="perfil__botao-icone"
+            aria-label="Ir para o perfil"
+            title="Perfil"
+          >
+            <UserCircle size={28} />
+          </Link>
+        </div>
+
         <Outlet />
       </main>
     </div>

@@ -178,3 +178,29 @@
   }
 }
 
+
+/* ── CABEÇALHO DO CONTEÚDO ──────────────────────────── */
+
+/*faixa fina no topo do conteúdo que contém o ícone de perfil alinhado à direita*/
+.conteudo__cabecalho {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+/*botão-link do ícone de perfil: sem fundo, cor suave que acende no hover*/
+.perfil__botao-icone {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: var(--cor-texto-suave);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.perfil__botao-icone:hover {
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.08);
+}

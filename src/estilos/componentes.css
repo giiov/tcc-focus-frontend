@@ -151,3 +151,67 @@ input[type="file"]::file-selector-button:hover {
   line-height: 1.65;
 }
 
+/* ── PERFIL ───────────────────────────────────────────── */
+
+/*campo genérico do formulário de perfil*/
+.perfil__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/*rótulo de cada campo*/
+.perfil__rotulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/*valor estático (e-mail)*/
+.perfil__valor {
+  font-size: 1rem;
+  color: var(--cor-texto);
+}
+
+/*caixinha de seleção de cargo*/
+.perfil__select {
+  background: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.perfil__select:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+}
+
+/*container dos checkboxes de provedores*/
+.perfil__provedores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/*cada item de provedor (checkbox + label)*/
+.perfil__provedor {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--cor-texto);
+}
+
+.perfil__provedor input[type="checkbox"] {
+  accent-color: var(--cor-primaria);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
