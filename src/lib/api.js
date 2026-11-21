@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 //erro das chamadas à api: guarda o status para a tela poder decidir o que fazer com ele
 export class ErroApi extends Error {
