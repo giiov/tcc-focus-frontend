@@ -2,15 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Send, Sparkles } from "lucide-react";
+import { chamarApi } from "../lib/api";
 
-//mesmo endereço da api usado no Início (vem do .env)
-const API_URL = import.meta.env.VITE_API_URL;
-
-//o backend só aproveita as últimas 10 mensagens (MAX_MENSAGEM_HISTORICO no assistente.py)
-//mandar mais que isso só deixaria o envio mais pesado
-const MAX_HISTORICO = 10;
-
-//perguntas prontas para quem abre a página sem saber o que perguntar
+// perguntas prontas para quem abre a página
 const SUGESTOES = [
   "O que é o padrão FOCUS?",
   "Qual a diferença entre BilledCost e EffectiveCost?",
@@ -18,24 +12,35 @@ const SUGESTOES = [
 ];
 
 function Assistente() {
-  //cada mensagem é { role: "user" | "assistant", content: "texto" }, o mesmo formato que a api espera
+  // mensagens exibidas na conversa atual
   const [mensagens, setMensagens] = useState([]);
-  //texto é o que está escrito na caixa de mensagem agora
+
+  // id da conversa criada no banco
+  const [conversaId, setConversaId] = useState(null);
+
+  // texto digitado pelo usuário
   const [texto, setTexto] = useState("");
-  //carregando vale true enquanto esperamos a Ada responder
+
+  // controla o envio e a resposta da Ada
   const [carregando, setCarregando] = useState(false);
+
   const [erro, setErro] = useState("");
-  //conversaRef aponta para a área de mensagens, para rolarmos até a última
+
+  // referência à área de mensagens
   const conversaRef = useRef(null);
 
-  //sempre que chega mensagem nova (ou a Ada começa a "pensar"), a conversa rola até o fim
+  // rola a conversa até a última mensagem
   useEffect(() => {
     const area = conversaRef.current;
-    area.scrollTop = area.scrollHeight;
+
+    if (area) {
+      area.scrollTop = area.scrollHeight;
+    }
   }, [mensagens, carregando]);
 
   async function perguntar(pergunta) {
     const conteudo = pergunta.trim();
+
     if (!conteudo || carregando) return;
 
     const anteriores = mensagens;
@@ -46,7 +51,7 @@ function Assistente() {
     setErro("");
     setCarregando(true);
 
-    //se algo der errado, a pergunta some da conversa e volta para a caixa de texto, e o usuário só reenvia
+    // restaura a mensagem caso ocorra algum erro
     function falhar(mensagemErro) {
       setMensagens(anteriores);
       setTexto(conteudo);
@@ -54,37 +59,62 @@ function Assistente() {
     }
 
     try {
-      const resposta = await fetch(`${API_URL}/assistente`, {
-        method: "POST",
-        //aqui mandamos json (e não arquivo), então o Content-Type precisa avisar isso
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mensagens: novas.slice(-MAX_HISTORICO) }),
-      });
+      let idAtual = conversaId;
 
-      const corpo = await resposta.json().catch(() => ({}));
+      // cria uma conversa quando ainda não existe uma selecionada
+      if (!idAtual) {
+        const criada = await chamarApi("/conversas", {
+          method: "POST",
+        });
 
-      if (!resposta.ok) {
-        falhar(typeof corpo.detail === "string" ? corpo.detail : "A Ada não conseguiu responder agora.");
-        return;
+        idAtual = criada.id;
+        setConversaId(idAtual);
       }
 
-      setMensagens([...novas, { role: "assistant", content: corpo.resposta }]);
-    } catch {
-      falhar("Não consegui falar com o servidor. Confira se a API está rodando.");
+      // envia a pergunta para a conversa
+      const resposta = await chamarApi(
+        `/conversas/${idAtual}/mensagens`,
+        {
+          method: "POST",
+          json: {
+            content: conteudo,
+          },
+        }
+      );
+
+      // atualiza as mensagens com o retorno do backend
+      const mensagensRecebidas = resposta.mensagens.map((mensagem) => ({
+        role: mensagem.role,
+        content: mensagem.content,
+      }));
+
+      setMensagens([...anteriores, ...mensagensRecebidas]);
+
+    } catch (error) {
+      console.error("Erro ao conversar com a Ada:", error);
+
+      falhar(
+        error.message || "A Ada não conseguiu responder agora."
+      );
     } finally {
       setCarregando(false);
     }
   }
 
   function aoEnviar(evento) {
-    //sem o preventDefault o formulário recarregaria a página inteira
+    // impede o formulário de recarregar a página
     evento.preventDefault();
+
     perguntar(texto);
   }
 
   function aoPressionarTecla(evento) {
-    //Enter envia e Shift+Enter pula linha; o isComposing evita enviar no meio de uma acentuação em andamento
-    if (evento.key === "Enter" && !evento.shiftKey && !evento.nativeEvent.isComposing) {
+    // Enter envia; Shift + Enter pula linha
+    if (
+      evento.key === "Enter" &&
+      !evento.shiftKey &&
+      !evento.nativeEvent.isComposing
+    ) {
       evento.preventDefault();
       perguntar(texto);
     }
@@ -93,19 +123,36 @@ function Assistente() {
   return (
     <section className="ada">
       <h1 className="pagina__titulo">Ada</h1>
-      <p className="dica ada__subtitulo">Assistente de FinOps e do padrão FOCUS</p>
+      <p className="dica ada__subtitulo">
+        Assistente de FinOps e do padrão FOCUS
+      </p>
 
-      {/*aria-live faz o leitor de tela anunciar a resposta da Ada quando ela chega*/}
-      <div className="cartao-vidro ada__conversa" ref={conversaRef} aria-live="polite">
+      <div
+        className="cartao-vidro ada__conversa"
+        ref={conversaRef}
+        aria-live="polite"
+      >
         {mensagens.length === 0 && (
           <div className="ada__vazio">
-            <span className="ada__avatar ada__avatar--grande" aria-hidden="true">
+            <span
+              className="ada__avatar ada__avatar--grande"
+              aria-hidden="true"
+            >
               <Sparkles size={22} />
             </span>
-            <p>Pergunte sobre FinOps, o padrão FOCUS ou as colunas de custo.</p>
+
+            <p>
+              Pergunte sobre FinOps, o padrão FOCUS ou as colunas de custo.
+            </p>
+
             <div className="ada__sugestoes">
               {SUGESTOES.map((sugestao) => (
-                <button key={sugestao} type="button" className="ada__sugestao" onClick={() => perguntar(sugestao)}>
+                <button
+                  key={sugestao}
+                  type="button"
+                  className="ada__sugestao"
+                  onClick={() => perguntar(sugestao)}
+                >
                   {sugestao}
                 </button>
               ))}
@@ -116,17 +163,20 @@ function Assistente() {
         {mensagens.map((mensagem, i) =>
           mensagem.role === "user" ? (
             <div key={i} className="ada__msg ada__msg--usuario">
-              <div className="ada__balao">{mensagem.content}</div>
+              <div className="ada__balao">
+                {mensagem.content}
+              </div>
             </div>
           ) : (
             <div key={i} className="ada__msg ada__msg--ada">
               <span className="ada__avatar" aria-hidden="true">
                 <Sparkles size={16} />
               </span>
-              {/*a Ada responde em markdown (negrito, listas, tabelas); o ReactMarkdown transforma isso em HTML
-                  o remark-gfm acrescenta o suporte a tabelas*/}
+
               <div className="ada__balao">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{mensagem.content}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {mensagem.content}
+                </ReactMarkdown>
               </div>
             </div>
           )
@@ -137,7 +187,10 @@ function Assistente() {
             <span className="ada__avatar" aria-hidden="true">
               <Sparkles size={16} />
             </span>
-            <div className="ada__balao dica">Ada está pensando...</div>
+
+            <div className="ada__balao dica">
+              Ada está pensando...
+            </div>
           </div>
         )}
       </div>
@@ -159,7 +212,13 @@ function Assistente() {
           aria-label="Mensagem para a Ada"
           maxLength={2000}
         />
-        <button className="ada__enviar" type="submit" disabled={!texto.trim() || carregando} aria-label="Enviar mensagem">
+
+        <button
+          className="ada__enviar"
+          type="submit"
+          disabled={!texto.trim() || carregando}
+          aria-label="Enviar mensagem"
+        >
           <Send size={18} aria-hidden="true" />
         </button>
       </form>
