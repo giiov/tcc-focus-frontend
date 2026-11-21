@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import {
   ChartColumn,
   History,
@@ -12,6 +12,7 @@ import {
   Table,
 } from "lucide-react";
 import Logo from "./Logo";
+import { supabase } from "../lib/supabase";
 
 //cada item do menu vira um link; guardar em lista evita repetir o mesmo bloco seis vezes
 //"Icone" começa com letra maiúscula porque o react só trata como componente nomes assim
@@ -28,6 +29,12 @@ const ITENS = [
 function Layout() {
   //recolhida guarda se a sidebar mostra só os ícones
   const [recolhida, setRecolhida] = useState(false);
+
+  //encerra a sessão só neste navegador; o contexto percebe a mudança e a RotaProtegida
+  //manda para o /login sozinha
+  async function sair() {
+    await supabase.auth.signOut({ scope: "local" });
+  }
 
   return (
     <div className={recolhida ? "layout layout--recolhido" : "layout"}>
@@ -73,13 +80,13 @@ function Layout() {
             <span className="menu__rotulo">{recolhida ? "Expandir menu" : "Recolher menu"}</span>
           </button>
 
-          {/*por enquanto "Sair" só volta para o login; com o supabase vai encerrar a sessão de verdade*/}
-          <Link to="/login" className="menu__item" aria-label="Sair" title="Sair">
+          <button className="menu__item" onClick={sair} aria-label="Sair" title="Sair">
             <span className="menu__quadrado">
               <LogOut size={20} aria-hidden="true" />
             </span>
             <span className="menu__rotulo">Sair</span>
-          </Link>
+          </button>
+
         </div>
       </aside>
 
