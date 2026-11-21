@@ -36,6 +36,7 @@ function Assistente() {
   // estados de carregamento
   const [carregando, setCarregando] = useState(false);
   const [carregandoConversas, setCarregandoConversas] = useState(true);
+  const [carregandoHistorico, setCarregandoHistorico] = useState(false);
 
   // controle das operações de criar, renomear e excluir
   const [criando, setCriando] = useState(false);
@@ -50,6 +51,9 @@ function Assistente() {
   // referências às áreas da interface
   const conversaRef = useRef(null);
   const tituloRef = useRef(null);
+
+  // identifica a última solicitação de histórico
+  const historicoRequisicaoRef = useRef(0);
 
   // busca as conversas salvas no banco
   const carregarConversas = useCallback(async () => {
@@ -105,6 +109,10 @@ function Assistente() {
       // coloca a nova conversa no início da lista
       setConversas((anteriores) => [criada, ...anteriores]);
 
+      // cancela qualquer carregamento de histórico anterior
+      historicoRequisicaoRef.current += 1;
+      setCarregandoHistorico(false);
+
       // seleciona a conversa recém-criada
       setConversaId(criada.id);
       setMensagens([]);
@@ -118,15 +126,53 @@ function Assistente() {
     }
   }
 
-  // seleciona uma conversa da lista
-  function selecionarConversa(conversa) {
+  // seleciona uma conversa e recupera seu histórico
+  async function selecionarConversa(conversa) {
     if (carregando) return;
+
+    // identifica esta requisição
+    const requisicao = ++historicoRequisicaoRef.current;
 
     setConversaId(conversa.id);
     setMensagens([]);
     setTexto("");
     setErro("");
     setEditandoId(null);
+    setCarregandoHistorico(true);
+
+    try {
+      const resposta = await chamarApi(
+        `/conversas/${conversa.id}/mensagens`
+      );
+
+      // ignora respostas de conversas que não estão mais selecionadas
+      if (requisicao !== historicoRequisicaoRef.current) return;
+
+      const historico = Array.isArray(resposta)
+        ? resposta
+        : resposta.mensagens;
+
+      if (!Array.isArray(historico)) {
+        throw new Error("Formato de histórico inválido.");
+      }
+
+      // organiza as mensagens para exibição
+      setMensagens(
+        historico.map((mensagem) => ({
+          role: mensagem.role,
+          content: mensagem.content,
+        }))
+      );
+    } catch (error) {
+      if (requisicao !== historicoRequisicaoRef.current) return;
+
+      console.error("Erro ao carregar histórico:", error);
+      setErro(error.message || "Não foi possível carregar o histórico.");
+    } finally {
+      if (requisicao === historicoRequisicaoRef.current) {
+        setCarregandoHistorico(false);
+      }
+    }
   }
 
   // inicia a edição do título
@@ -199,6 +245,10 @@ function Assistente() {
 
       // limpa a área principal se a conversa excluída estava selecionada
       if (conversaId === conversa.id) {
+        // invalida qualquer carregamento pendente
+        historicoRequisicaoRef.current += 1;
+        setCarregandoHistorico(false);
+
         setConversaId(null);
         setMensagens([]);
         setTexto("");
@@ -220,7 +270,7 @@ function Assistente() {
   async function perguntar(pergunta) {
     const conteudo = pergunta.trim();
 
-    if (!conteudo || carregando) return;
+    if (!conteudo || carregando || carregandoHistorico) return;
 
     const anteriores = mensagens;
 
@@ -445,7 +495,17 @@ function Assistente() {
             ref={conversaRef}
             aria-live="polite"
           >
-            {mensagens.length === 0 && (
+            {carregandoHistorico && (
+              <div className="ada__vazio">
+                <span className="ada__avatar ada__avatar--grande" aria-hidden="true">
+                  <Sparkles size={22} />
+                </span>
+
+                <p>Carregando histórico...</p>
+              </div>
+            )}
+
+            {mensagens.length === 0 && !carregandoHistorico && (
               <div className="ada__vazio">
                 <span
                   className="ada__avatar ada__avatar--grande"
@@ -514,6 +574,7 @@ function Assistente() {
 
           <form className="ada__form" onSubmit={aoEnviar}>
             <textarea
+              disabled={carregando || carregandoHistorico}
               className="ada__entrada"
               rows={2}
               value={texto}
@@ -527,7 +588,7 @@ function Assistente() {
             <button
               className="ada__enviar"
               type="submit"
-              disabled={!texto.trim() || carregando}
+              disabled={!texto.trim() || carregando || carregandoHistorico}
               aria-label="Enviar mensagem"
             >
               <Send size={18} aria-hidden="true" />
