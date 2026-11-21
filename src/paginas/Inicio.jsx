@@ -1,14 +1,21 @@
 import { useState } from "react";
+import { salvarConversao } from "../servicos/historico";
 
 //limite do plano grátis do supabase storage (50 MB por arquivo)
 //validar aqui avisa o usuário na hora, sem esperar o envio falhar lá na frente
 const LIMITE_MB = 50;
 
-function Inicio() {
+//endereço da api, vem do arquivo .env (VITE_API_URL); no deploy é só trocar o valor lá
+//no vite, só variáveis que começam com VITE_ chegam ao código do navegador
+const API_URL = import.meta.env.VITE_API_URL;
+
+function Inicio({ resultado, setResultado })  {
   //arquivo guarda o csv escolhido (ou null se ainda não escolheu nenhum)
   const [arquivo, setArquivo] = useState(null);
   //erro guarda a mensagem para o usuário (ou "" quando está tudo certo)
   const [erro, setErro] = useState("");
+  //enviando evita cliques repetidos enquanto a api trabalha
+  const [enviando, setEnviando] = useState(false);
 
   function escolherArquivo(evento) {
     //files é uma lista; pegamos só o primeiro porque o input aceita um arquivo por vez
@@ -34,42 +41,100 @@ function Inicio() {
     }
 
     setErro("");
+    setResultado(null);
     setArquivo(escolhido);
   }
 
-  function enviar() {
-    //por enquanto só mostramos no console; no próximo passo isso vai chamar a api
-    console.log("Enviar:", arquivo.name);
+  //async porque falar com a api leva tempo; o await espera a resposta chegar sem travar a tela
+  async function enviar() {
+    setEnviando(true);
+    setErro("");
+    setResultado(null);
+
+    //o FormData monta o envio de arquivo no formato que o FastAPI espera
+    //o nome "arquivo" precisa ser igual ao parâmetro da rota no main.py
+    const dados = new FormData();
+    dados.append("arquivo", arquivo);
+
+    try {
+      //não colocamos Content-Type: o navegador define sozinho, e precisa dele para o arquivo ir certo
+      const resposta = await fetch(`${API_URL}/converter`, { method: "POST", body: dados });
+
+      //se a api devolver algo que não é json (ex.: erro 500), o catch evita quebrar a tela
+      const corpo = await resposta.json().catch(() => ({}));
+
+      //ok é false para status 400, 413, 422, 500...; nesses casos a api manda a mensagem em "detail"
+      if (!resposta.ok) {
+        setErro(typeof corpo.detail === "string" ? corpo.detail : "Não foi possível converter o arquivo.");
+        return;
+      }
+
+      setResultado(corpo);
+
+      //TODO(banco): hoje salvarConversao não faz nada; quando o banco for ligado, cada conversão cai no histórico
+      //try/catch próprio: falhar ao salvar no histórico não pode estragar uma conversão que deu certo
+      try {
+        await salvarConversao({
+          nome_arquivo: arquivo.name,
+          formato: corpo.formato,
+          total_linhas: corpo.total_linhas,
+        });
+      } catch (e) {
+        console.error("Não foi possível salvar no histórico:", e);
+      }
+
+      
+    } catch {
+      //cai aqui quando nem chegou na api: servidor desligado, endereço errado ou CORS
+      setErro("Não consegui falar com o servidor. Confira se a API está rodando.");
+    } finally {
+      //o finally roda sempre, deu certo ou errado, para o botão voltar ao normal
+      setEnviando(false);
+    }
   }
 
   return (
-    <section>
+    <section className="inicio">
       <h1 className="pagina__titulo">Início</h1>
-      <h2>Envie seu arquivo de custos (.csv)</h2>
 
-      <input type="file" accept=".csv" onChange={escolherArquivo} />
+      <div className="cartao-vidro inicio__cartao">
+        <h2>Envie seu arquivo de custos (.csv)</h2>
 
-      <p className="dica">
-        Suportados: AWS Cost and Usage Report, GCP Billing Export, Azure Cost Export e Oracle OCI Cost
-      </p>
+        <div className="inicio__upload">
+          <input type="file" accept=".csv" onChange={escolherArquivo} />
+        </div>
 
-      {/*role="alert" faz o leitor de tela avisar o erro assim que ele aparece*/}
-      {erro && (
-        <p className="erro" role="alert">
-          {erro}
+        <p className="dica">
+          Suportados: AWS Cost and Usage Report, GCP Billing Export, Azure Cost Export e Oracle OCI Cost
         </p>
-      )}
 
-      {arquivo && (
-        <p>
-          Arquivo escolhido: <strong>{arquivo.name}</strong> ({(arquivo.size / 1024 / 1024).toFixed(2)} MB)
-        </p>
-      )}
+        {/*role="alert" faz o leitor de tela avisar o erro assim que ele aparece*/}
+        {erro && (
+          <p className="erro" role="alert">
+            {erro}
+          </p>
+        )}
 
-      {/*disabled impede o clique enquanto não houver arquivo válido*/}
-      <button className="botao" onClick={enviar} disabled={!arquivo}>
-        Enviar
-      </button>
+        {arquivo && (
+          <p>
+            Arquivo escolhido: <strong>{arquivo.name}</strong> ({(arquivo.size / 1024 / 1024).toFixed(2)} MB)
+          </p>
+        )}
+
+        {/*disabled impede o clique enquanto não houver arquivo válido ou enquanto o envio está em andamento*/}
+        <div>
+          <button className="botao" onClick={enviar} disabled={!arquivo || enviando}>
+            {enviando ? "Enviando..." : "Enviar arquivo"}
+          </button>
+        </div>
+
+        {resultado && (
+          <p>
+            Convertido com sucesso: formato <strong>{resultado.formato.toUpperCase()}</strong>,{" "}
+            <strong>{resultado.total_linhas}</strong> linhas.
+          </p>
+        )}
+      </div>
     </section>
   );
 }

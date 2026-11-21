@@ -1,0 +1,30 @@
+/* sem isso, padding e borda aumentam o tamanho dos elementos e o layout "estoura" */
+* {
+  box-sizing: border-box;
+}
+
+/* o navegador deixa uma margem de 8px no body por padrão; zeramos para controlar o espaçamento */
+/* o fundo quadriculado é feito só com gradientes: duas camadas de linhas finas (horizontais e verticais) formam a grade
+   os dois brilhos coloridos dão profundidade, e é neles que o vidro da sidebar vai "pegar" cor
+   background-attachment: fixed mantém o fundo parado quando a página rola */
+body {
+  margin: 0;
+  background-color: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(95, 45, 145, 0.5), transparent 55%),
+    radial-gradient(ellipse at 95% 100%, rgba(178, 74, 130, 0.2), transparent 50%),
+    radial-gradient(circle at 0% 75%, rgba(95, 45, 145, 0.55), transparent 35%),
+    linear-gradient(rgba(95, 45, 145, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 45, 145, 0.2) 1px, transparent 1px);
+  background-size: auto, auto, auto, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+  color: var(--cor-texto);
+  font-family: var(--fonte-texto);
+}
+
+/* garante que dá para ver qual elemento está selecionado ao navegar pelo teclado */
+:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+

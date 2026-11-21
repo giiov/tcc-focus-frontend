@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Variáveis de ambiente (chaves e endereços)
+.env
+.env.*
+!.env.example
