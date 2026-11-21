@@ -1092,3 +1092,270 @@ input[type="file"]::file-selector-button:hover {
     display: none;
   }
 }
+
+
+/* ---------- histórico de conversas da Ada ---------- */
+
+.ada__layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 0.85rem;
+  flex: 1;
+  min-height: 0;
+}
+
+/* painel lateral do histórico */
+.ada__historico {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 16px;
+  background: rgba(43, 18, 76, 0.58);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.ada__historico-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ada__historico-topo h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.ada__historico-topo p {
+  margin: 0.25rem 0 0;
+  color: var(--cor-texto-suave);
+  font-size: 0.75rem;
+}
+
+.ada__nova,
+.ada__nova-larga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(152, 51, 175, 0.35);
+  color: var(--cor-texto);
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.ada__nova {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.ada__nova-larga {
+  width: 100%;
+  padding: 0.65rem;
+  margin-bottom: 1rem;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.ada__nova:hover:not(:disabled),
+.ada__nova-larga:hover:not(:disabled) {
+  background: rgba(152, 51, 175, 0.65);
+}
+
+.ada__nova:disabled,
+.ada__nova-larga:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* lista que rola sem movimentar o restante do painel */
+.ada__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+
+.ada__lista-vazia {
+  margin: 0.5rem 0;
+  color: var(--cor-texto-suave);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* cada conversa da lista */
+.ada__item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.25rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.ada__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ada__item--ativo {
+  background: rgba(152, 51, 175, 0.2);
+  border-color: rgba(178, 74, 130, 0.4);
+}
+
+.ada__item-titulo {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.4rem;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  color: var(--cor-texto);
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ada__item-titulo span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ada__item-titulo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ações de renomear e excluir */
+.ada__item-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex-shrink: 0;
+}
+
+.ada__item-acoes button,
+.ada__edicao button {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.ada__item-acoes button:hover:not(:disabled),
+.ada__edicao button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--cor-texto);
+}
+
+.ada__item-acoes button:disabled,
+.ada__edicao button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* edição do título dentro da própria lista */
+.ada__edicao {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.ada__edicao input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 0.45rem;
+  border: 1px solid var(--cor-roxo-medio);
+  border-radius: 7px;
+  outline: none;
+  background: rgba(25, 0, 25, 0.5);
+  color: var(--cor-texto);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.ada__edicao input:focus {
+  border-color: var(--cor-destaque);
+}
+
+.ada__erro-lista {
+  margin: 0 0 0.75rem;
+  color: var(--cor-erro);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* área principal da conversa */
+.ada__principal {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  gap: 0.75rem;
+}
+
+.ada__cabecalho .pagina__titulo {
+  margin: 0;
+}
+
+/* adaptação para telas menores */
+@media (max-width: 700px) {
+  .ada__layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(130px, 180px) minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+
+  .ada__historico {
+    padding: 0.75rem;
+  }
+
+  .ada__historico-topo {
+    margin-bottom: 0.5rem;
+  }
+
+  .ada__historico-topo p {
+    display: none;
+  }
+
+  .ada__nova-larga {
+    margin-bottom: 0.5rem;
+    padding: 0.45rem;
+  }
+
+  .ada__lista {
+    gap: 0.2rem;
+  }
+
+  .ada__item {
+    padding: 0.1rem;
+  }
+
+  .ada__item-titulo {
+    padding: 0.4rem;
+  }
+}
