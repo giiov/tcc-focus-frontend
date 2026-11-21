@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const LIMITE_MB = 50;
+import { chamarApi } from "../lib/api";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const LIMITE_MB = 50;
 
 function Inicio() {
   // guarda o arquivo selecionado
@@ -52,33 +52,12 @@ function Inicio() {
     dados.append("arquivo", arquivo);
 
     try {
-      // envia o arquivo para a API
-      const resposta = await fetch(`${API_URL}/converter`, {
-        method: "POST",
-        body: dados
-      });
-
-      // recebe a resposta da API
-      const corpo = await resposta.json().catch(() => ({}));
-
-      if (!resposta.ok) {
-        setErro(
-          typeof corpo.detail === "string"
-            ? corpo.detail
-            : "Não foi possível converter o arquivo."
-        );
-        return;
-      }
-
-      // guarda o resultado
+      //o chamarApi manda o token do usuário; o back exige login no /converter
+      const corpo = await chamarApi("/converter", { method: "POST", body: dados });
       setResultado(corpo);
-
-    } catch {
-      // informa falha de comunicação
-      setErro("Não consegui falar com o servidor. Confira se a API está rodando.");
-
+    } catch (erro) {
+      setErro(erro.message);
     } finally {
-      // finaliza o envio
       setEnviando(false);
     }
   }
