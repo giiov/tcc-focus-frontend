@@ -1,0 +1,368 @@
+/* ---------- página Início (envio do csv e resumo da conversão) ---------- */
+
+/* sem largura máxima: ocupa o mesmo espaço da página Gráficos */
+.inicio {
+  --cor-sucesso: #7ee2b0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inicio .pagina__titulo {
+  margin-bottom: 0;
+}
+
+/* os blocos dentro do cartão respiram com o mesmo espaço entre si, em vez de ficarem colados */
+.inicio__cartao {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inicio__cartao h2 {
+  margin: 0;
+}
+
+/* ---------- área de envio ---------- */
+
+/* o label inteiro é a área de clique; o input real fica escondido (mas continua acessível pelo teclado) */
+.inicio__zona {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border: 1.5px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.inicio__zona:hover,
+.inicio__zona--ativa {
+  border-color: var(--cor-destaque);
+  background: rgba(152, 51, 175, 0.12);
+}
+
+/* quem navega por teclado vê o contorno no label, já que o input está escondido */
+.inicio__zona:focus-within {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+.inicio__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* o mesmo quadradinho em vidro roxo dos itens ativos da sidebar */
+.inicio__zona-icone {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 0.2rem;
+  border-radius: 12px;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 14px rgba(152, 51, 175, 0.45);
+}
+
+.inicio__zona-texto {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.inicio__zona-texto strong {
+  color: #ffffff;
+}
+
+/* ---------- arquivo escolhido ---------- */
+
+.inicio__arquivo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.inicio__arquivo svg {
+  flex-shrink: 0;
+  color: var(--cor-destaque);
+}
+
+/* nome longo vira "nome-muito-gran..." numa linha só, e o nome inteiro aparece no hover (title) */
+.inicio__arquivo-nome {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.inicio__arquivo-tamanho {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--cor-texto-suave);
+}
+
+.inicio__remover {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.inicio__remover:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* ---------- formatos suportados ---------- */
+
+.inicio__provedores {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inicio__rotulo {
+  margin-right: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.inicio__chip {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+}
+
+.inicio__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* os links "Ver dados" e "Ver gráficos" usam o visual do botão, então tiram o sublinhado de link */
+.inicio__acoes a.botao {
+  text-decoration: none;
+}
+
+/* versão secundária do botão: vidro neutro, para o roxo ficar só na ação principal */
+.inicio__botao-vidro {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- resumo da conversão ---------- */
+
+.inicio__topo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.inicio__ok {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--cor-sucesso);
+  background: rgba(126, 226, 176, 0.12);
+  border: 1px solid rgba(126, 226, 176, 0.4);
+}
+
+.inicio__topo-texto {
+  min-width: 0;
+}
+
+.inicio__nome-resultado {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* quatro números lado a lado; em tela estreita cai para duas por linha */
+.inicio__numeros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.inicio__numero {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.inicio__numero-rotulo {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.inicio__numero-valor {
+  display: block;
+  font-family: var(--fonte-titulo);
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.inicio__numero-valor small {
+  font-family: var(--fonte-texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--cor-texto-suave);
+}
+
+/* ---------- painéis de colunas ---------- */
+
+/* a lista de pares ocupa menos que as colunas FOCUS, por isso o painel da esquerda é mais estreito */
+.inicio__paineis {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 0.8rem;
+}
+
+@media (max-width: 760px) {
+  .inicio__paineis {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* min-width: 0 deixa os nomes longos encurtarem com "..." em vez de esticar o painel */
+.inicio__painel {
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.inicio__painel h3 {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+/* cada provedor mapeia no máximo 15 colunas, então a lista cabe inteira sem rolagem */
+.inicio__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* três colunas: nome no csv (largura limitada, para a seta ficar perto), seta e nome no FOCUS */
+.inicio__par {
+  display: grid;
+  grid-template-columns: minmax(0, min(16rem, 45%)) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+
+.inicio__par:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.inicio__par svg {
+  color: var(--cor-destaque);
+}
+
+.inicio__origem,
+.inicio__focus {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inicio__origem {
+  color: var(--cor-texto-suave);
+}
+
+.inicio__focus {
+  font-weight: 600;
+}
+
+.inicio__colunas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.inicio__coluna {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  color: var(--cor-texto-suave);
+}
+
+/* coluna que saiu com dados: roxa e com o check */
+.inicio__coluna--ok {
+  border-color: rgba(152, 51, 175, 0.7);
+  background: rgba(152, 51, 175, 0.22);
+  color: #ffffff;
+}
+
+/* coluna sem dados neste arquivo: apagada e tracejada */
+.inicio__coluna--vazia {
+  border-style: dashed;
+  opacity: 0.55;
+}
+
+/* o seletor mais longo é preciso porque ".cartao-vidro p" (tamanho 0.95rem) tem mais força que a classe sozinha */
+.inicio__painel .inicio__legenda {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+}
