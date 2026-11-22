@@ -13,8 +13,9 @@
   margin: 0;
 }
 
-.ada__subtitulo {
-  margin: -0.5rem 0 0;
+/* .cartao-vidro p zera a margem com mais força, por isso o seletor mais específico aqui */
+.ada__cabecalho .ada__subtitulo {
+  margin: 0.2rem 0 0;
 }
 
 .ada__conversa {
@@ -77,23 +78,6 @@
 
 .ada__msg--ada {
   align-self: flex-start;
-}
-
-.ada__avatar {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(152, 51, 175, 0.95), rgba(95, 45, 145, 0.85));
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.ada__avatar--grande {
-  width: 48px;
-  height: 48px;
 }
 
 .ada__balao {
@@ -239,7 +223,8 @@
 
 .ada__layout {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
+  /* a conversa ocupa o espaço que sobra e o histórico fica com 250px, do lado direito */
+  grid-template-columns: minmax(0, 1fr) 250px;
   gap: 0.85rem;
   flex: 1;
   min-height: 0;
@@ -247,6 +232,7 @@
 
 /* painel lateral do histórico */
 .ada__historico {
+  order: 2; /* order maior = vai para o fim da linha, ou seja, para a direita (no HTML ele continua primeiro) */
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -459,6 +445,14 @@
   gap: 0.75rem;
 }
 
+/* barra de vidro do topo: mascote como ícone ao lado do título */
+.ada__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+}
+
 .ada__cabecalho .pagina__titulo {
   margin: 0;
 }
@@ -472,7 +466,18 @@
   }
 
   .ada__historico {
+    order: 0; /* no celular o histórico volta para o topo */
     padding: 0.75rem;
+  }
+
+  .ada__cabecalho {
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .ada__cabecalho .ada__subtitulo {
+    font-size: 0.78rem;
+    line-height: 1.35;
   }
 
   .ada__historico-topo {

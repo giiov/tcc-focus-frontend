@@ -215,3 +215,46 @@ input[type="file"]::file-selector-button:hover {
   height: 16px;
   cursor: pointer;
 }
+
+/* ---------- mascote da Ada ---------- */
+
+/* base: vale para todos os tamanhos */
+.ada-mascote {
+  display: block;
+  flex-shrink: 0; /* não deixa o mascote ser espremido ao lado do texto ou do balão */
+  animation: ada-flutuar 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(152, 51, 175, 0.55)); /* reforça o brilho neon */
+  user-select: none;
+  pointer-events: none;
+}
+
+.ada-mascote--avatar { width: 48px; height: 48px; }    /* ao lado das mensagens */
+.ada-mascote--cabecalho { width: auto; height: 4rem; } /* ao lado do título (imagem cheia: a largura se ajusta sozinha) */
+.ada-mascote--grande { width: 180px; height: auto; }   /* tela vazia da conversa */
+
+/* fica DEPOIS da regra base de propósito: com a mesma força, a última ganha */
+.ada-mascote--pensando {
+  animation: ada-pulsar 1.2s ease-in-out infinite;
+}
+
+@keyframes ada-flutuar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes ada-pulsar {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 8px rgba(152, 51, 175, 0.45));
+  }
+  50% {
+    transform: translateY(-4px);
+    filter: drop-shadow(0 0 20px rgba(178, 74, 130, 0.95));
+  }
+}
+
+/* quem pediu menos movimento no sistema não vê animação */
+@media (prefers-reduced-motion: reduce) {
+  .ada-mascote,
+  .ada-mascote--pensando { animation: none; }
+}

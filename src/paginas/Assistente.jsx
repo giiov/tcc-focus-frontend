@@ -1,3 +1,4 @@
+import AdaMascote from "../componentes/AdaMascote";
 import { useAuth } from "../contexto/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -7,7 +8,6 @@ import {
   Pencil,
   Plus,
   Send,
-  Sparkles,
   Trash2,
   X,
 } from "lucide-react";
@@ -490,11 +490,16 @@ function Assistente() {
 
         {/* área principal da Ada */}
         <div className="ada__principal">
-          <header className="ada__cabecalho">
-            <h1 className="pagina__titulo">Ada</h1>
-            <p className="dica ada__subtitulo">
-              Assistente de FinOps e do padrão FOCUS
-            </p>
+          <header className="cartao-vidro ada__cabecalho">
+            {/* no cabeçalho a Ada fica sempre na versão padrão (sem a prop "pensando") */}
+            <AdaMascote tamanho="cabecalho" />
+
+            <div>
+              <h1 className="pagina__titulo">Ada</h1>
+              <p className="dica ada__subtitulo">
+                Assistente de FinOps e do padrão FOCUS
+              </p>
+            </div>
           </header>
 
           <div
@@ -504,9 +509,7 @@ function Assistente() {
           >
             {carregandoHistorico && (
               <div className="ada__vazio">
-                <span className="ada__avatar ada__avatar--grande" aria-hidden="true">
-                  <Sparkles size={22} />
-                </span>
+                <AdaMascote tamanho="grande" pensando />
 
                 <p>Carregando histórico...</p>
               </div>
@@ -514,12 +517,7 @@ function Assistente() {
 
             {mensagens.length === 0 && !carregandoHistorico && (
               <div className="ada__vazio">
-                <span
-                  className="ada__avatar ada__avatar--grande"
-                  aria-hidden="true"
-                >
-                  <Sparkles size={22} />
-                </span>
+                <AdaMascote tamanho="grande" />
 
                 <p>
                   Pergunte sobre FinOps, o padrão FOCUS ou as colunas de custo.
@@ -547,9 +545,7 @@ function Assistente() {
                 </div>
               ) : (
                 <div key={i} className="ada__msg ada__msg--ada">
-                  <span className="ada__avatar" aria-hidden="true">
-                    <Sparkles size={16} />
-                  </span>
+                  <AdaMascote />
 
                   <div className="ada__balao">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -562,9 +558,7 @@ function Assistente() {
 
             {carregando && (
               <div className="ada__msg ada__msg--ada">
-                <span className="ada__avatar" aria-hidden="true">
-                  <Sparkles size={16} />
-                </span>
+                <AdaMascote pensando />
 
                 <div className="ada__balao dica">
                   Ada está pensando...
