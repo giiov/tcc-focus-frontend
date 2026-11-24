@@ -1359,3 +1359,83 @@ input[type="file"]::file-selector-button:hover {
     padding: 0.4rem;
   }
 }
+
+/* ---------- histórico de conversões ---------- */
+
+.historico__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* o título já tem margem própria; aqui quem controla o espaço é o .historico__topo */
+.historico__topo .pagina__titulo {
+  margin: 0;
+}
+
+.historico__lista {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historico__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* nome grande ou sem espaços (como um caminho comprido) não pode estourar o cartão */
+.historico__nome {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.historico__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+/* o provedor vira uma etiqueta destacada */
+.historico__formato {
+  padding: 0.15rem 0.6rem;
+  border-radius: 8px;
+  background: rgba(152, 51, 175, 0.25);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* botão discreto: apagar não deve chamar mais atenção que a conversão */
+.historico__apagar {
+  background: transparent;
+  border: 1px solid var(--cor-borda);
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  color: var(--cor-texto);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.historico__apagar:hover {
+  border-color: var(--cor-erro);
+  color: var(--cor-erro);
+}
