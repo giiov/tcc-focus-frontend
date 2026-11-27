@@ -3,7 +3,7 @@ import logoNuvem from "../assets/logo-nuvem.png";
 //o texto da página fica em listas aqui em cima: para mudar um provedor ou uma tecnologia, é só editar a lista
 const PROVEDORES = ["AWS", "Microsoft Azure", "Google Cloud", "Oracle Cloud"];
 
-const TECNOLOGIAS = ["Python", "FastAPI", "Pandas", "React", "Vite"];
+const TECNOLOGIAS = ["FOCUS 4.0", "Python", "FastAPI", "Pandas", "React", "Vite"];
 
 //cada passo do guia de uso estruturado com numero, titulo e descricao
 const PASSOS = [

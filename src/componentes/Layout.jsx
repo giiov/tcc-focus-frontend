@@ -18,7 +18,7 @@ import { supabase } from "../lib/supabase";
 //cada item do menu vira um link; guardar em lista evita repetir o mesmo bloco seis vezes
 //"Icone" começa com letra maiúscula porque o react só trata como componente nomes assim
 const ITENS = [
-  { caminho: "/", rotulo: "Início", Icone: House },
+  { caminho: "/app", rotulo: "Início", Icone: House },
   { caminho: "/dados", rotulo: "Dados", Icone: Table },
   { caminho: "/graficos", rotulo: "Gráficos", Icone: ChartColumn },
   { caminho: "/historico", rotulo: "Histórico", Icone: History },
@@ -50,7 +50,7 @@ function Layout() {
             <NavLink
               key={caminho}
               to={caminho}
-              end={caminho === "/"}
+              end={caminho === "/app"}
               aria-label={rotulo}
               title={rotulo}
               className={({ isActive }) =>
@@ -101,6 +101,7 @@ function Layout() {
             title="Perfil"
           >
             <UserCircle size={28} />
+            <span>Perfil</span>
           </Link>
         </div>
 

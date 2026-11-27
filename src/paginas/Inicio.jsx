@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChartColumn, Check, CircleCheck, FileSpreadsheet, Table, Upload, X } from "lucide-react";
 import { chamarApi } from "../lib/api";
-import { salvarConversao } from "../servicos/historico";
 
 //limite do plano grátis do supabase storage (50 MB por arquivo)
 //validar aqui avisa o usuário na hora, sem esperar o envio falhar lá na frente
@@ -199,17 +198,6 @@ function Inicio({ resultado, setResultado }) {
       const corpo = await chamarApi("/converter", { method: "POST", body: dados });
       //o nome do arquivo vai junto para o resumo continuar mostrando de onde veio, mesmo ao voltar para esta página
       setResultado({ ...corpo, nome_arquivo: arquivo.name });
-
-      //tenta salvar no histórico; falhar ao salvar não pode estragar a conversão
-      try {
-        await salvarConversao({
-          nome_arquivo: arquivo.name,
-          formato: corpo.formato,
-          total_linhas: corpo.total_linhas,
-        });
-      } catch (e) {
-        console.error("Não foi possível salvar no histórico:", e);
-      }
     } catch (erro) {
       setErro(erro.message || "Não foi possível converter o arquivo.");
     } finally {

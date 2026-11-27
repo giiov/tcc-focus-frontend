@@ -42,7 +42,7 @@ function Dados({ resultado }) {
         <h1 className="pagina__titulo">Dados</h1>
         <div className="cartao-vidro">
           <p className="dica">
-            Nenhum arquivo convertido ainda. <Link to="/">Envie um CSV na aba Início</Link>.
+            Nenhum arquivo convertido ainda. <Link to="/app">Envie um CSV na aba Início</Link>.
           </p>
         </div>
       </section>
