@@ -190,17 +190,25 @@
 
 /*botão-link do ícone de perfil: sem fundo, cor suave que acende no hover*/
 .perfil__botao-icone {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-width: 104px;
+  min-height: 44px;
+  padding: 0.45rem 0.8rem;
   border-radius: 12px;
-  color: var(--cor-texto-suave);
+  border: 1px solid rgba(230, 198, 219, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cor-texto);
   text-decoration: none;
-  transition: color 0.2s, background 0.2s;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 
 .perfil__botao-icone:hover {
   color: var(--cor-texto);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(230, 198, 219, 0.42);
+  background: rgba(255, 255, 255, 0.11);
 }

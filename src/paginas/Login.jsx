@@ -89,7 +89,7 @@ function Login() {
 
   //estes returns vêm depois de todos os hooks, porque o react exige a mesma ordem de hooks sempre
   if (carregando) return null;
-  if (usuario) return <Navigate to="/" replace />;
+  if (usuario) return <Navigate to="/app" replace />;
 
   return (
     <div className="login">

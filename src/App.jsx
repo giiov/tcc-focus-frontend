@@ -9,6 +9,7 @@ import Graficos from "./paginas/Graficos";
 import Historico from "./paginas/Historico";
 import Inicio from "./paginas/Inicio";
 import Login from "./paginas/Login";
+import LandingPage from "./paginas/LandingPage";
 import Sobre from "./paginas/Sobre";
 
 //o App agora só decide qual página aparece em cada endereço
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
       {/*o login fica fora da RotaProtegida e do Layout porque não tem sidebar*/}
       <Route path="/login" element={<Login />} />
 
@@ -27,7 +29,7 @@ function App() {
         {/*as rotas de dentro aparecem no lugar do Outlet do Layout, então todas ganham a sidebar*/}
         <Route element={<Layout />}>
           {/*o Inicio recebe os dois porque é ele que escreve o resultado depois do upload*/}
-          <Route path="/" element={<Inicio resultado={resultado} setResultado={setResultado} />} />
+          <Route path="/app" element={<Inicio resultado={resultado} setResultado={setResultado} />} />
           <Route path="/dados" element={<Dados resultado={resultado} />} />
           <Route path="/historico" element={<Historico />} />
           <Route path="/perfil" element={<Perfil />} />
